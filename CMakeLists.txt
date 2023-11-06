@@ -1,15 +1,22 @@
-add_executable(final_project)
+cmake_minimum_required(VERSION 3.12)
 
-# must match with pio filename and executable name from above
-pico_generate_pio_header(final_project ${CMAKE_CURRENT_LIST_DIR}/hsync.pio)
-pico_generate_pio_header(final_project ${CMAKE_CURRENT_LIST_DIR}/vsync.pio)
-pico_generate_pio_header(final_project ${CMAKE_CURRENT_LIST_DIR}/rgb.pio)
+# Pull in SDK (must be before project)
+include(pico_sdk_import.cmake)
 
-# must match with executable name and source file names
-target_sources(imu_project PRIVATE main.c vga_graphics.c)
+project(hunter_pico_examples C CXX ASM)
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 
-# Add pico_multicore which is required for multicore functionality
-target_link_libraries(imu_project pico_stdlib pico_bootsel_via_double_reset pico_multicore hardware_pwm hardware_dma hardware_irq hardware_adc hardware_pio hardware_i2c)
+set(HUNTER_PICO_EXAMPLES_PATH ${PROJECT_SOURCE_DIR})
 
-# create map/bin/hex file etc.
-pico_add_extra_outputs(final_project)
+# Initialize the SDK
+pico_sdk_init()
+
+# Add multi example
+add_subdirectory(final)
+
+add_compile_options(-Wall
+        -Wno-format          # int != int32_t as far as the compiler is concerned because gcc has int32_t as long int
+        -Wno-unused-function # we have some for the docs that aren't called
+        -Wno-maybe-uninitialized
+        )
