@@ -35,6 +35,10 @@ typedef signed int fix15 ;
 
 // semaphore
 static struct pt_sem vga_semaphore;
+const int dirPin = 15;
+const int stepPin = 14;
+const int stepsPerRevolution = 200;
+
 
 // Interrupt service routine
 void on_pwm_wrap() {
@@ -51,6 +55,34 @@ static PT_THREAD (protothread_vga(struct pt *pt))
 {
     // Indicate start of thread
     PT_BEGIN(pt) ;
+
+    while(true){
+        // Set motor direction clockwise
+        gpio_put(dirPin, 1);
+        // Spin motor slowly
+        for(int x = 0; x < stepsPerRevolution; x++)
+        {
+            gpio_put(stepPin, 1);
+            sleep_us(2000);
+            gpio_put(stepPin, 0);
+            sleep_us(2000);
+        }
+        sleep_ms(1000); // Wait a second
+        
+        // Set motor direction counterclockwise
+        gpio_put(dirPin, 0);
+
+        // Spin motor quickly
+        for(int x = 0; x < stepsPerRevolution; x++)
+        {
+            gpio_put(stepPin, 1);
+            sleep_us(2000);
+            gpio_put(stepPin, 0);
+            sleep_us(2000);
+        }
+        sleep_ms(1000); // Wait a second
+    }
+    
     // Indicate end of thread
     PT_END(pt);
 }
@@ -74,6 +106,11 @@ int main() {
 
     // Initialize stdio
     stdio_init_all();
+
+    gpio_init(stepPin);
+    gpio_init(dirPin);
+    gpio_set_dir(stepPin, GPIO_OUT);
+    gpio_set_dir(dirPin, GPIO_OUT);
 
     // Initialize VGA
     initVGA() ;
