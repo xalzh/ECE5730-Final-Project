@@ -38,6 +38,8 @@ static struct pt_sem vga_semaphore;
 const int dirPin = 15;
 const int stepPin = 14;
 const int stepsPerRevolution = 200;
+const int stepPads[4] = {2,3,4,5};
+const int sequence[4] = {3,6,12,9};
 
 
 // Interrupt service routine
@@ -56,33 +58,48 @@ static PT_THREAD (protothread_vga(struct pt *pt))
     // Indicate start of thread
     PT_BEGIN(pt) ;
 
-    while(true){
-        // Set motor direction clockwise
-        gpio_put(dirPin, 1);
-        // Spin motor slowly
-        for(int x = 0; x < stepsPerRevolution; x++)
-        {
-            gpio_put(stepPin, 1);
-            sleep_us(2000);
-            gpio_put(stepPin, 0);
-            sleep_us(2000);
+    // while(true){
+    //     // Set motor direction clockwise
+    //     gpio_put(dirPin, 1);
+    //     // Spin motor slowly
+    //     for(int x = 0; x < stepsPerRevolution; x++)
+    //     {
+    //         gpio_put(stepPin, 1);
+    //         sleep_us(2000);
+    //         gpio_put(stepPin, 0);
+    //         sleep_us(2000);
+    //     }
+    //     sleep_ms(1000); // Wait a second
+    //     // Set motor direction counterclockwise
+    //     gpio_put(dirPin, 0);
+    //     // Spin motor quickly
+    //     for(int x = 0; x < stepsPerRevolution; x++)
+    //     {
+    //         gpio_put(stepPin, 1);
+    //         sleep_us(2000);
+    //         gpio_put(stepPin, 0);
+    //         sleep_us(2000);
+    //     }
+    //     sleep_ms(1000); // Wait a second
+    // }
+    
+    while (true){
+        for(int i = 0; i < 4; i ++){
+            int s = sequence[i];
+            for (int j = 0; j < 4; j++){
+                int m = 1 << j;
+                if ((m & s) > 0){
+                    gpio_put(stepPads[j],-1);
+                }
+                else{
+                    gpio_put(stepPads[j],0);
+                }
+            }
+            sleep_ms(2);
         }
-        sleep_ms(1000); // Wait a second
-        
-        // Set motor direction counterclockwise
-        gpio_put(dirPin, 0);
-
-        // Spin motor quickly
-        for(int x = 0; x < stepsPerRevolution; x++)
-        {
-            gpio_put(stepPin, 1);
-            sleep_us(2000);
-            gpio_put(stepPin, 0);
-            sleep_us(2000);
-        }
-        sleep_ms(1000); // Wait a second
     }
     
+
     // Indicate end of thread
     PT_END(pt);
 }
@@ -111,13 +128,16 @@ int main() {
     gpio_init(dirPin);
     gpio_set_dir(stepPin, GPIO_OUT);
     gpio_set_dir(dirPin, GPIO_OUT);
+    
+    for(int i = 0; i < 4; i ++){
+        gpio_init(stepPads[i]);
+        gpio_set_dir(stepPads[i], GPIO_OUT);
+        gpio_put(stepPads[i], 0);
+    }
 
     // Initialize VGA
     initVGA() ;
 
-    ////////////////////////////////////////////////////////////////////////
-    ///////////////////////////// ROCK AND ROLL ////////////////////////////
-    ////////////////////////////////////////////////////////////////////////
     // start core 1 
     multicore_reset_core1();
     multicore_launch_core1(core1_entry);

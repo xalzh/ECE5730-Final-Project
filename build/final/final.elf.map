@@ -70,6 +70,12 @@ Discarded input sections
  .bss.sem_lock  0x00000000        0x4 CMakeFiles/final.dir/main.c.obj
  .bss.vga_semaphore
                 0x00000000        0x4 CMakeFiles/final.dir/main.c.obj
+ .rodata.dirPin
+                0x00000000        0x4 CMakeFiles/final.dir/main.c.obj
+ .rodata.stepPin
+                0x00000000        0x4 CMakeFiles/final.dir/main.c.obj
+ .rodata.stepsPerRevolution
+                0x00000000        0x4 CMakeFiles/final.dir/main.c.obj
  .text          0x00000000        0x0 CMakeFiles/final.dir/vga_graphics.c.obj
  .data          0x00000000        0x0 CMakeFiles/final.dir/vga_graphics.c.obj
  .bss           0x00000000        0x0 CMakeFiles/final.dir/vga_graphics.c.obj
@@ -187,8 +193,6 @@ Discarded input sections
                 0x00000000       0x7c CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_gpio/gpio.c.obj
  .text.gpio_set_input_enabled
                 0x00000000       0x28 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_gpio/gpio.c.obj
- .text.gpio_init
-                0x00000000       0x3c CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_gpio/gpio.c.obj
  .text.gpio_deinit
                 0x00000000       0x30 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_gpio/gpio.c.obj
  .text.gpio_init_mask
@@ -359,12 +363,8 @@ Discarded input sections
                 0x00000000       0x8c CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/common/pico_time/time.c.obj
  .text.alarm_pool_dump
                 0x00000000       0x34 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/common/pico_time/time.c.obj
- .text.sleep_until
-                0x00000000       0xc4 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/common/pico_time/time.c.obj
  .text.sleep_us
                 0x00000000       0x24 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/common/pico_time/time.c.obj
- .text.sleep_ms
-                0x00000000       0x34 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/common/pico_time/time.c.obj
  .rodata.at_the_end_of_time
                 0x00000000        0x8 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/common/pico_time/time.c.obj
  .rodata.nil_time
@@ -398,8 +398,6 @@ Discarded input sections
                 0x00000000       0x68 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_timer/timer.c.obj
  .text.busy_wait_ms
                 0x00000000       0x88 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_timer/timer.c.obj
- .text.busy_wait_until
-                0x00000000       0x20 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_timer/timer.c.obj
  .text.hardware_alarm_force_irq
                 0x00000000       0x3c CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_timer/timer.c.obj
  .text          0x00000000        0x0 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/common/pico_util/datetime.c.obj
@@ -835,10 +833,6 @@ Discarded input sections
  .text          0x00000000        0x0 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_int64_ops/pico_int64_ops_aeabi.S.obj
  .data          0x00000000        0x0 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_int64_ops/pico_int64_ops_aeabi.S.obj
  .bss           0x00000000        0x0 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_int64_ops/pico_int64_ops_aeabi.S.obj
- .text.__aeabi_lmul
-                0x00000000       0x32 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_int64_ops/pico_int64_ops_aeabi.S.obj
- .ARM.attributes
-                0x00000000       0x22 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_int64_ops/pico_int64_ops_aeabi.S.obj
  .text          0x00000000        0x0 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_float/float_aeabi.S.obj
  .data          0x00000000        0x0 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_float/float_aeabi.S.obj
  .bss           0x00000000        0x0 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_float/float_aeabi.S.obj
@@ -1255,9 +1249,9 @@ Discarded input sections
  .comment       0x00000000       0x4a CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_i2c/i2c.c.obj
  .ARM.attributes
                 0x00000000       0x2c CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_i2c/i2c.c.obj
- .text          0x00000000        0x0 C:\Users\zl823\AppData\Local\Temp\cc8IxL4X.o
- .data          0x00000000        0x0 C:\Users\zl823\AppData\Local\Temp\cc8IxL4X.o
- .bss           0x00000000        0x0 C:\Users\zl823\AppData\Local\Temp\cc8IxL4X.o
+ .text          0x00000000        0x0 C:\Users\zl823\AppData\Local\Temp\ccSi1NTe.o
+ .data          0x00000000        0x0 C:\Users\zl823\AppData\Local\Temp\ccSi1NTe.o
+ .bss           0x00000000        0x0 C:\Users\zl823\AppData\Local\Temp\ccSi1NTe.o
  .data          0x00000000        0x0 c:/progra~2/gnuarm~1/102021~1.10/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v6-m/nofp\libgcc.a(_dvmd_tls.o)
  .bss           0x00000000        0x0 c:/progra~2/gnuarm~1/102021~1.10/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v6-m/nofp\libgcc.a(_dvmd_tls.o)
  .text          0x00000000        0x0 c:/progra~2/gnuarm~1/102021~1.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp\libc.a(lib_a-calloc.o)
@@ -1473,11 +1467,11 @@ LOAD c:/progra~2/gnuarm~1/102021~1.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../
 .boot2          0x10000000      0x100
                 0x10000000                __boot2_start__ = .
  *(.boot2)
- .boot2         0x10000000      0x100 C:\Users\zl823\AppData\Local\Temp\cc8IxL4X.o
+ .boot2         0x10000000      0x100 C:\Users\zl823\AppData\Local\Temp\ccSi1NTe.o
                 0x10000100                __boot2_end__ = .
                 0x00000001                ASSERT (((__boot2_end__ - __boot2_start__) == 0x100), ERROR: Pico second stage bootloader must be 256 bytes in size)
 
-.text           0x10000100     0x2848
+.text           0x10000100     0x2aa0
                 0x10000100                __logical_binary_start = .
  *(.vectors)
  .vectors       0x10000100       0xd4 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_standard_link/crt0.S.obj
@@ -1538,259 +1532,274 @@ LOAD c:/progra~2/gnuarm~1/102021~1.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../
                 0x100002b8                _init
  *(EXCLUDE_FILE(*libm.a: *libc.a:*lib_a-mem*.o *libgcc.a:) .text*)
  .text          0x100002bc       0x48 c:/progra~2/gnuarm~1/102021~1.10/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v6-m/nofp/crtbegin.o
- .text.protothread_vga
-                0x10000304        0xc CMakeFiles/final.dir/main.c.obj
  .text.protothread_serial
-                0x10000310        0x8 CMakeFiles/final.dir/main.c.obj
+                0x10000304        0xc CMakeFiles/final.dir/main.c.obj
+ .text.protothread_vga
+                0x10000310       0x9c CMakeFiles/final.dir/main.c.obj
  .text.protothread_sched.constprop.0.isra.0
-                0x10000318       0x70 CMakeFiles/final.dir/main.c.obj
+                0x100003ac       0x70 CMakeFiles/final.dir/main.c.obj
  .text.protothread_sched1.constprop.0.isra.0
-                0x10000388       0x70 CMakeFiles/final.dir/main.c.obj
+                0x1000041c       0x70 CMakeFiles/final.dir/main.c.obj
  .text.core1_entry
-                0x100003f8       0x84 CMakeFiles/final.dir/main.c.obj
-                0x100003f8                core1_entry
+                0x1000048c       0x84 CMakeFiles/final.dir/main.c.obj
+                0x1000048c                core1_entry
  .text.startup.main
-                0x1000047c       0x98 CMakeFiles/final.dir/main.c.obj
-                0x1000047c                main
- .text.initVGA  0x10000514      0x204 CMakeFiles/final.dir/vga_graphics.c.obj
-                0x10000514                initVGA
+                0x10000510       0xd8 CMakeFiles/final.dir/main.c.obj
+                0x10000510                main
+ .text.initVGA  0x100005e8      0x204 CMakeFiles/final.dir/vga_graphics.c.obj
+                0x100005e8                initVGA
  .text.gpio_set_function
-                0x10000718       0x30 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_gpio/gpio.c.obj
-                0x10000718                gpio_set_function
+                0x100007ec       0x30 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_gpio/gpio.c.obj
+                0x100007ec                gpio_set_function
+ .text.gpio_init
+                0x1000081c       0x3c CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_gpio/gpio.c.obj
+                0x1000081c                gpio_init
  .text.running_on_fpga
-                0x10000748       0x10 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_platform/platform.c.obj
-                0x10000748                running_on_fpga
+                0x10000858       0x10 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_platform/platform.c.obj
+                0x10000858                running_on_fpga
  .text.hw_claim_lock
-                0x10000758       0x18 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_claim/claim.c.obj
-                0x10000758                hw_claim_lock
+                0x10000868       0x18 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_claim/claim.c.obj
+                0x10000868                hw_claim_lock
  .text.hw_claim_unlock
-                0x10000770       0x14 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_claim/claim.c.obj
-                0x10000770                hw_claim_unlock
+                0x10000880       0x14 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_claim/claim.c.obj
+                0x10000880                hw_claim_unlock
  .text.hw_claim_or_assert
-                0x10000784       0x44 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_claim/claim.c.obj
-                0x10000784                hw_claim_or_assert
+                0x10000894       0x44 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_claim/claim.c.obj
+                0x10000894                hw_claim_or_assert
  .text.spin_locks_reset
-                0x100007c8       0x1c CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_sync/sync.c.obj
-                0x100007c8                spin_locks_reset
+                0x100008d8       0x1c CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_sync/sync.c.obj
+                0x100008d8                spin_locks_reset
  .text.next_striped_spin_lock_num
-                0x100007e4       0x18 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_sync/sync.c.obj
-                0x100007e4                next_striped_spin_lock_num
+                0x100008f4       0x18 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_sync/sync.c.obj
+                0x100008f4                next_striped_spin_lock_num
  .text.irq_set_enabled
-                0x100007fc       0x24 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_irq/irq.c.obj
-                0x100007fc                irq_set_enabled
+                0x1000090c       0x24 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_irq/irq.c.obj
+                0x1000090c                irq_set_enabled
  .text.irq_is_enabled
-                0x10000820       0x18 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_irq/irq.c.obj
-                0x10000820                irq_is_enabled
+                0x10000930       0x18 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_irq/irq.c.obj
+                0x10000930                irq_is_enabled
  .text.irq_get_vtable_handler
-                0x10000838       0x10 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_irq/irq.c.obj
-                0x10000838                irq_get_vtable_handler
+                0x10000948       0x10 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_irq/irq.c.obj
+                0x10000948                irq_get_vtable_handler
  .text.irq_set_exclusive_handler
-                0x10000848       0x54 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_irq/irq.c.obj
-                0x10000848                irq_set_exclusive_handler
+                0x10000958       0x54 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_irq/irq.c.obj
+                0x10000958                irq_set_exclusive_handler
  .text.irq_remove_handler
-                0x1000089c      0x1b0 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_irq/irq.c.obj
-                0x1000089c                irq_remove_handler
+                0x100009ac      0x1b0 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_irq/irq.c.obj
+                0x100009ac                irq_remove_handler
  .text.irq_add_tail_to_free_list
-                0x10000a4c       0xb4 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_irq/irq.c.obj
-                0x10000a4c                irq_add_tail_to_free_list
+                0x10000b5c       0xb4 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_irq/irq.c.obj
+                0x10000b5c                irq_add_tail_to_free_list
  .text.irq_init_priorities
-                0x10000b00       0x24 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_irq/irq.c.obj
-                0x10000b00                irq_init_priorities
+                0x10000c10       0x24 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_irq/irq.c.obj
+                0x10000c10                irq_init_priorities
  .text.lock_init
-                0x10000b24       0x10 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/common/pico_sync/lock_core.c.obj
-                0x10000b24                lock_init
+                0x10000c34       0x10 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/common/pico_sync/lock_core.c.obj
+                0x10000c34                lock_init
  .text.mutex_init
-                0x10000b34       0x1c CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/common/pico_sync/mutex.c.obj
-                0x10000b34                mutex_init
+                0x10000c44       0x1c CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/common/pico_sync/mutex.c.obj
+                0x10000c44                mutex_init
  .text.recursive_mutex_init
-                0x10000b50       0x1c CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/common/pico_sync/mutex.c.obj
-                0x10000b50                recursive_mutex_init
+                0x10000c60       0x1c CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/common/pico_sync/mutex.c.obj
+                0x10000c60                recursive_mutex_init
  .text.timer_pool_entry_comparator
-                0x10000b6c       0x34 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/common/pico_time/time.c.obj
-                0x10000b6c                timer_pool_entry_comparator
+                0x10000c7c       0x34 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/common/pico_time/time.c.obj
+                0x10000c7c                timer_pool_entry_comparator
  .text.sleep_until_callback
-                0x10000ba0       0x30 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/common/pico_time/time.c.obj
+                0x10000cb0       0x30 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/common/pico_time/time.c.obj
  .text.add_alarm_under_lock.isra.0
-                0x10000bd0      0x100 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/common/pico_time/time.c.obj
+                0x10000ce0      0x100 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/common/pico_time/time.c.obj
  .text.alarm_pool_alarm_callback
-                0x10000cd0      0x1bc CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/common/pico_time/time.c.obj
+                0x10000de0      0x1bc CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/common/pico_time/time.c.obj
  .text.alarm_pool_init_default
-                0x10000e8c       0x6c CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/common/pico_time/time.c.obj
-                0x10000e8c                alarm_pool_init_default
+                0x10000f9c       0x6c CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/common/pico_time/time.c.obj
+                0x10000f9c                alarm_pool_init_default
  .text.alarm_pool_add_alarm_at
-                0x10000ef8      0x178 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/common/pico_time/time.c.obj
-                0x10000ef8                alarm_pool_add_alarm_at
+                0x10001008      0x178 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/common/pico_time/time.c.obj
+                0x10001008                alarm_pool_add_alarm_at
+ .text.sleep_until
+                0x10001180       0xc4 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/common/pico_time/time.c.obj
+                0x10001180                sleep_until
+ .text.sleep_ms
+                0x10001244       0x34 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/common/pico_time/time.c.obj
+                0x10001244                sleep_ms
  .text.best_effort_wfe_or_timeout
-                0x10001070       0xd4 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/common/pico_time/time.c.obj
-                0x10001070                best_effort_wfe_or_timeout
+                0x10001278       0xd4 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/common/pico_time/time.c.obj
+                0x10001278                best_effort_wfe_or_timeout
  .text.hardware_alarm_irq_handler
-                0x10001144       0xbc CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_timer/timer.c.obj
+                0x1000134c       0xbc CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_timer/timer.c.obj
  .text.hardware_alarm_claim
-                0x10001200       0x18 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_timer/timer.c.obj
-                0x10001200                hardware_alarm_claim
+                0x10001408       0x18 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_timer/timer.c.obj
+                0x10001408                hardware_alarm_claim
  .text.time_us_64
-                0x10001218       0x14 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_timer/timer.c.obj
-                0x10001218                time_us_64
+                0x10001420       0x14 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_timer/timer.c.obj
+                0x10001420                time_us_64
  .text.busy_wait_us
-                0x1000122c       0x54 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_timer/timer.c.obj
-                0x1000122c                busy_wait_us
+                0x10001434       0x54 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_timer/timer.c.obj
+                0x10001434                busy_wait_us
+ .text.busy_wait_until
+                0x10001488       0x20 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_timer/timer.c.obj
+                0x10001488                busy_wait_until
  .text.hardware_alarm_set_callback
-                0x10001280       0x8c CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_timer/timer.c.obj
-                0x10001280                hardware_alarm_set_callback
+                0x100014a8       0x8c CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_timer/timer.c.obj
+                0x100014a8                hardware_alarm_set_callback
  .text.hardware_alarm_set_target
-                0x1000130c       0xd4 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_timer/timer.c.obj
-                0x1000130c                hardware_alarm_set_target
+                0x10001534       0xd4 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_timer/timer.c.obj
+                0x10001534                hardware_alarm_set_target
  .text.hardware_alarm_cancel
-                0x100013e0       0x3c CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_timer/timer.c.obj
-                0x100013e0                hardware_alarm_cancel
+                0x10001608       0x3c CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_timer/timer.c.obj
+                0x10001608                hardware_alarm_cancel
  .text.ph_merge_nodes
-                0x1000141c       0x68 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/common/pico_util/pheap.c.obj
+                0x10001644       0x68 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/common/pico_util/pheap.c.obj
  .text.ph_post_alloc_init
-                0x10001484       0x3c CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/common/pico_util/pheap.c.obj
-                0x10001484                ph_post_alloc_init
+                0x100016ac       0x3c CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/common/pico_util/pheap.c.obj
+                0x100016ac                ph_post_alloc_init
  .text.ph_merge_two_pass
-                0x100014c0       0x90 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/common/pico_util/pheap.c.obj
-                0x100014c0                ph_merge_two_pass
+                0x100016e8       0x90 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/common/pico_util/pheap.c.obj
+                0x100016e8                ph_merge_two_pass
  .text.ph_remove_any_head
-                0x10001550      0x100 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/common/pico_util/pheap.c.obj
+                0x10001778      0x100 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/common/pico_util/pheap.c.obj
  .text.ph_remove_head
-                0x10001650      0x104 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/common/pico_util/pheap.c.obj
-                0x10001650                ph_remove_head
+                0x10001878      0x104 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/common/pico_util/pheap.c.obj
+                0x10001878                ph_remove_head
  .text.ph_remove_and_free_node
-                0x10001754       0x7c CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/common/pico_util/pheap.c.obj
-                0x10001754                ph_remove_and_free_node
+                0x1000197c       0x7c CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/common/pico_util/pheap.c.obj
+                0x1000197c                ph_remove_and_free_node
  .text.uart_init
-                0x100017d0      0x188 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_uart/uart.c.obj
-                0x100017d0                uart_init
+                0x100019f8      0x188 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_uart/uart.c.obj
+                0x100019f8                uart_init
  .text.clocks_init
-                0x10001958      0x2d0 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_clocks/clocks.c.obj
-                0x10001958                clocks_init
+                0x10001b80      0x2d0 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_clocks/clocks.c.obj
+                0x10001b80                clocks_init
  .text.clock_get_hz
-                0x10001c28        0xc CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_clocks/clocks.c.obj
-                0x10001c28                clock_get_hz
+                0x10001e50        0xc CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_clocks/clocks.c.obj
+                0x10001e50                clock_get_hz
  .text.pll_init
-                0x10001c34       0xa0 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_pll/pll.c.obj
-                0x10001c34                pll_init
+                0x10001e5c       0xa0 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_pll/pll.c.obj
+                0x10001e5c                pll_init
  .text.watchdog_start_tick
-                0x10001cd4       0x10 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_watchdog/watchdog.c.obj
-                0x10001cd4                watchdog_start_tick
+                0x10001efc       0x10 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_watchdog/watchdog.c.obj
+                0x10001efc                watchdog_start_tick
  .text.xosc_init
-                0x10001ce4       0x28 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_xosc/xosc.c.obj
-                0x10001ce4                xosc_init
+                0x10001f0c       0x28 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_xosc/xosc.c.obj
+                0x10001f0c                xosc_init
  .text.runtime_init
-                0x10001d0c       0xf0 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_runtime/runtime.c.obj
-                0x10001d0c                runtime_init
- .text._exit    0x10001dfc        0x4 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_runtime/runtime.c.obj
-                0x10001dfc                _exit
- .text.exit     0x10001e00        0x8 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_runtime/runtime.c.obj
-                0x10001e00                exit
- .text.panic    0x10001e08       0x30 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_runtime/runtime.c.obj
-                0x10001e08                panic
+                0x10001f34       0xf0 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_runtime/runtime.c.obj
+                0x10001f34                runtime_init
+ .text._exit    0x10002024        0x4 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_runtime/runtime.c.obj
+                0x10002024                _exit
+ .text.exit     0x10002028        0x8 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_runtime/runtime.c.obj
+                0x10002028                exit
+ .text.panic    0x10002030       0x30 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_runtime/runtime.c.obj
+                0x10002030                panic
  .text.hard_assertion_failure
-                0x10001e38        0xc CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_runtime/runtime.c.obj
-                0x10001e38                hard_assertion_failure
+                0x10002060        0xc CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_runtime/runtime.c.obj
+                0x10002060                hard_assertion_failure
  .text._out_char
-                0x10001e44       0x10 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_printf/printf.c.obj
+                0x1000206c       0x10 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_printf/printf.c.obj
  .text.weak_raw_vprintf
-                0x10001e54       0x30 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_printf/printf.c.obj
-                0x10001e54                weak_raw_vprintf
- .text          0x10001e84       0x10 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_bit_ops/bit_ops_aeabi.S.obj
+                0x1000207c       0x30 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_printf/printf.c.obj
+                0x1000207c                weak_raw_vprintf
+ .text          0x100020ac       0x10 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_bit_ops/bit_ops_aeabi.S.obj
  .text.rom_func_lookup
-                0x10001e94       0x10 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_bootrom/bootrom.c.obj
-                0x10001e94                rom_func_lookup
+                0x100020bc       0x10 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_bootrom/bootrom.c.obj
+                0x100020bc                rom_func_lookup
  .text.rom_data_lookup
-                0x10001ea4       0x10 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_bootrom/bootrom.c.obj
-                0x10001ea4                rom_data_lookup
+                0x100020cc       0x10 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_bootrom/bootrom.c.obj
+                0x100020cc                rom_data_lookup
  .text.rom_funcs_lookup
-                0x10001eb4       0x44 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_bootrom/bootrom.c.obj
-                0x10001eb4                rom_funcs_lookup
+                0x100020dc       0x44 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_bootrom/bootrom.c.obj
+                0x100020dc                rom_funcs_lookup
  .text.__wrap___aeabi_uidiv
-                0x10001ef8       0x4c CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_divider/divider.S.obj
-                0x10001ef8                __wrap___aeabi_uidiv
-                0x10001ef8                __wrap___aeabi_uidivmod
-                0x10001ef8                div_u32u32
-                0x10001ef8                divmod_u32u32
-                0x10001f00                divmod_u32u32_unsafe
-                0x10001f28                divmod_u32u32_savestate
+                0x10002120       0x4c CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_divider/divider.S.obj
+                0x10002120                __wrap___aeabi_uidiv
+                0x10002120                __wrap___aeabi_uidivmod
+                0x10002120                div_u32u32
+                0x10002120                divmod_u32u32
+                0x10002128                divmod_u32u32_unsafe
+                0x10002150                divmod_u32u32_savestate
  .text.__aeabi_double_init
-                0x10001f44       0x94 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_double/double_init_rom.c.obj
-                0x10001f44                __aeabi_double_init
+                0x1000216c       0x94 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_double/double_init_rom.c.obj
+                0x1000216c                __aeabi_double_init
  .text.double_table_shim_on_use_helper
-                0x10001fd8       0x2c CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_double/double_v1_rom_shim.S.obj
-                0x10001fd8                double_table_shim_on_use_helper
+                0x10002200       0x2c CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_double/double_v1_rom_shim.S.obj
+                0x10002200                double_table_shim_on_use_helper
+ .text.__aeabi_lmul
+                0x1000222c       0x32 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_int64_ops/pico_int64_ops_aeabi.S.obj
+                0x1000222c                __wrap___aeabi_lmul
+ *fill*         0x1000225e        0x2 
  .text.__aeabi_float_init
-                0x10002004       0x64 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_float/float_init_rom.c.obj
-                0x10002004                __aeabi_float_init
+                0x10002260       0x64 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_float/float_init_rom.c.obj
+                0x10002260                __aeabi_float_init
  .text.float_table_shim_on_use_helper
-                0x10002068       0x2c CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_float/float_v1_rom_shim.S.obj
-                0x10002068                float_table_shim_on_use_helper
- .text          0x10002094       0x10 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_mem_ops/mem_ops_aeabi.S.obj
-                0x10002094                __aeabi_mem_init
- .text.memcpy   0x100020a4        0xc CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_mem_ops/mem_ops_aeabi.S.obj
-                0x100020a4                __wrap_memcpy
-                0x100020a4                __wrap___aeabi_memcpy
+                0x100022c4       0x2c CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_float/float_v1_rom_shim.S.obj
+                0x100022c4                float_table_shim_on_use_helper
+ .text          0x100022f0       0x10 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_mem_ops/mem_ops_aeabi.S.obj
+                0x100022f0                __aeabi_mem_init
+ .text.memcpy   0x10002300        0xc CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_mem_ops/mem_ops_aeabi.S.obj
+                0x10002300                __wrap_memcpy
+                0x10002300                __wrap___aeabi_memcpy
  .text.stdio_out_chars_no_crlf
-                0x100020b0       0x10 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_stdio/stdio.c.obj
+                0x1000230c       0x10 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_stdio/stdio.c.obj
  .text.stdio_out_chars_crlf
-                0x100020c0       0xb4 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_stdio/stdio.c.obj
+                0x1000231c       0xb4 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_stdio/stdio.c.obj
  .text.stdio_put_string.isra.0
-                0x10002174       0xfc CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_stdio/stdio.c.obj
+                0x100023d0       0xfc CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_stdio/stdio.c.obj
  .text.__wrap_putchar
-                0x10002270       0x98 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_stdio/stdio.c.obj
-                0x10002270                __wrap_putchar
+                0x100024cc       0x98 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_stdio/stdio.c.obj
+                0x100024cc                __wrap_putchar
  .text.__wrap_puts
-                0x10002308       0x3c CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_stdio/stdio.c.obj
-                0x10002308                __wrap_puts
+                0x10002564       0x3c CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_stdio/stdio.c.obj
+                0x10002564                __wrap_puts
  .text.stdio_set_driver_enabled
-                0x10002344       0x30 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_stdio/stdio.c.obj
-                0x10002344                stdio_set_driver_enabled
+                0x100025a0       0x30 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_stdio/stdio.c.obj
+                0x100025a0                stdio_set_driver_enabled
  .text.stdio_init_all
-                0x10002374        0xc CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_stdio/stdio.c.obj
-                0x10002374                stdio_init_all
+                0x100025d0        0xc CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_stdio/stdio.c.obj
+                0x100025d0                stdio_init_all
  .text.stdio_uart_out_chars
-                0x10002380       0x4c CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c.obj
+                0x100025dc       0x4c CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c.obj
  .text.stdio_uart_in_chars
-                0x100023cc       0x84 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c.obj
-                0x100023cc                stdio_uart_in_chars
+                0x10002628       0x84 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c.obj
+                0x10002628                stdio_uart_in_chars
  .text.on_uart_rx
-                0x10002450       0x28 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c.obj
+                0x100026ac       0x28 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c.obj
  .text.stdio_uart_set_chars_available_callback
-                0x10002478       0x8c CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c.obj
+                0x100026d4       0x8c CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c.obj
  .text.stdio_uart_init
-                0x10002504       0x48 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c.obj
-                0x10002504                stdio_uart_init
+                0x10002760       0x48 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c.obj
+                0x10002760                stdio_uart_init
  .text.startup.boot_double_tap_check
-                0x1000254c       0x60 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_bootsel_via_double_reset/pico_bootsel_via_double_reset.c.obj
+                0x100027a8       0x60 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_bootsel_via_double_reset/pico_bootsel_via_double_reset.c.obj
  .text.core1_trampoline
-                0x100025ac        0x4 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_multicore/multicore.c.obj
+                0x10002808        0x4 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_multicore/multicore.c.obj
  .text.core1_wrapper
-                0x100025b0        0xc CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_multicore/multicore.c.obj
-                0x100025b0                core1_wrapper
+                0x1000280c        0xc CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_multicore/multicore.c.obj
+                0x1000280c                core1_wrapper
  .text.multicore_reset_core1
-                0x100025bc       0x24 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_multicore/multicore.c.obj
-                0x100025bc                multicore_reset_core1
+                0x10002818       0x24 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_multicore/multicore.c.obj
+                0x10002818                multicore_reset_core1
  .text.multicore_launch_core1_raw
-                0x100025e0       0x84 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_multicore/multicore.c.obj
-                0x100025e0                multicore_launch_core1_raw
+                0x1000283c       0x84 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_multicore/multicore.c.obj
+                0x1000283c                multicore_launch_core1_raw
  .text.multicore_launch_core1
-                0x10002664       0x4c CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_multicore/multicore.c.obj
-                0x10002664                multicore_launch_core1
+                0x100028c0       0x4c CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_multicore/multicore.c.obj
+                0x100028c0                multicore_launch_core1
  .text.pio_add_program
-                0x100026b0       0xc8 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_pio/pio.c.obj
-                0x100026b0                pio_add_program
+                0x1000290c       0xc8 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_pio/pio.c.obj
+                0x1000290c                pio_add_program
  .text.pio_sm_set_consecutive_pindirs
-                0x10002778       0xb0 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_pio/pio.c.obj
-                0x10002778                pio_sm_set_consecutive_pindirs
+                0x100029d4       0xb0 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_pio/pio.c.obj
+                0x100029d4                pio_sm_set_consecutive_pindirs
  .text.pio_sm_init
-                0x10002828       0x8c CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_pio/pio.c.obj
-                0x10002828                pio_sm_init
- .text.strlen   0x100028b4       0x5c c:/progra~2/gnuarm~1/102021~1.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp\libc.a(lib_a-strlen-stub.o)
-                0x100028b4                strlen
+                0x10002a84       0x8c CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_pio/pio.c.obj
+                0x10002a84                pio_sm_init
+ .text.strlen   0x10002b10       0x5c c:/progra~2/gnuarm~1/102021~1.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp\libc.a(lib_a-strlen-stub.o)
+                0x10002b10                strlen
  *(.fini)
- .fini          0x10002910        0x4 c:/progra~2/gnuarm~1/102021~1.10/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v6-m/nofp/crti.o
-                0x10002910                _fini
- *fill*         0x10002914        0x4 
- .fini.__stub   0x10002918       0x30 linker stubs
+ .fini          0x10002b6c        0x4 c:/progra~2/gnuarm~1/102021~1.10/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v6-m/nofp/crti.o
+                0x10002b6c                _fini
+ .fini.__stub   0x10002b70       0x30 linker stubs
  *crtbegin.o(.ctors)
  *crtbegin?.o(.ctors)
  *(EXCLUDE_FILE(*crtend.o *crtend?.o) .ctors)
@@ -1802,117 +1811,123 @@ LOAD c:/progra~2/gnuarm~1/102021~1.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../
  *(SORT_BY_NAME(.dtors.*))
  *(.dtors)
  *(.eh_frame*)
- .eh_frame      0x10002948        0x0 c:/progra~2/gnuarm~1/102021~1.10/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v6-m/nofp/crtbegin.o
-                0x10002948                . = ALIGN (0x4)
+ .eh_frame      0x10002ba0        0x0 c:/progra~2/gnuarm~1/102021~1.10/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v6-m/nofp/crtbegin.o
+                0x10002ba0                . = ALIGN (0x4)
 
-.glue_7         0x10002948        0x0
- .glue_7        0x10002948        0x0 linker stubs
+.glue_7         0x10002ba0        0x0
+ .glue_7        0x10002ba0        0x0 linker stubs
 
-.glue_7t        0x10002948        0x0
- .glue_7t       0x10002948        0x0 linker stubs
+.glue_7t        0x10002ba0        0x0
+ .glue_7t       0x10002ba0        0x0 linker stubs
 
-.vfp11_veneer   0x10002948        0x0
- .vfp11_veneer  0x10002948        0x0 linker stubs
+.vfp11_veneer   0x10002ba0        0x0
+ .vfp11_veneer  0x10002ba0        0x0 linker stubs
 
-.v4_bx          0x10002948        0x0
- .v4_bx         0x10002948        0x0 linker stubs
+.v4_bx          0x10002ba0        0x0
+ .v4_bx         0x10002ba0        0x0 linker stubs
 
-.iplt           0x10002948        0x0
- .iplt          0x10002948        0x0 c:/progra~2/gnuarm~1/102021~1.10/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v6-m/nofp/crtbegin.o
+.iplt           0x10002ba0        0x0
+ .iplt          0x10002ba0        0x0 c:/progra~2/gnuarm~1/102021~1.10/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v6-m/nofp/crtbegin.o
 
-.rodata         0x10002948      0x17c
+.rodata         0x10002ba0      0x19c
  *(EXCLUDE_FILE(*libm.a: *libc.a:*lib_a-mem*.o *libgcc.a:) .rodata*)
+ .rodata.sequence
+                0x10002ba0       0x10 CMakeFiles/final.dir/main.c.obj
+                0x10002ba0                sequence
+ .rodata.stepPads
+                0x10002bb0       0x10 CMakeFiles/final.dir/main.c.obj
+                0x10002bb0                stepPads
  .rodata.hsync_program
-                0x10002948        0x6 CMakeFiles/final.dir/vga_graphics.c.obj
- *fill*         0x1000294e        0x2 
+                0x10002bc0        0x6 CMakeFiles/final.dir/vga_graphics.c.obj
+ *fill*         0x10002bc6        0x2 
  .rodata.hsync_program_instructions
-                0x10002950       0x12 CMakeFiles/final.dir/vga_graphics.c.obj
- *fill*         0x10002962        0x2 
+                0x10002bc8       0x12 CMakeFiles/final.dir/vga_graphics.c.obj
+ *fill*         0x10002bda        0x2 
  .rodata.rgb_program
-                0x10002964        0x6 CMakeFiles/final.dir/vga_graphics.c.obj
- *fill*         0x1000296a        0x2 
+                0x10002bdc        0x6 CMakeFiles/final.dir/vga_graphics.c.obj
+ *fill*         0x10002be2        0x2 
  .rodata.rgb_program_instructions
-                0x1000296c       0x12 CMakeFiles/final.dir/vga_graphics.c.obj
- *fill*         0x1000297e        0x2 
+                0x10002be4       0x12 CMakeFiles/final.dir/vga_graphics.c.obj
+ *fill*         0x10002bf6        0x2 
  .rodata.vsync_program
-                0x10002980        0x6 CMakeFiles/final.dir/vga_graphics.c.obj
- *fill*         0x10002986        0x2 
+                0x10002bf8        0x6 CMakeFiles/final.dir/vga_graphics.c.obj
+ *fill*         0x10002bfe        0x2 
  .rodata.vsync_program_instructions
-                0x10002988       0x1c CMakeFiles/final.dir/vga_graphics.c.obj
+                0x10002c00       0x1c CMakeFiles/final.dir/vga_graphics.c.obj
  .rodata.hardware_alarm_claim.str1.4
-                0x100029a4       0x22 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_timer/timer.c.obj
- *fill*         0x100029c6        0x2 
+                0x10002c1c       0x22 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_timer/timer.c.obj
+ *fill*         0x10002c3e        0x2 
  .rodata.panic.str1.4
-                0x100029c8       0x12 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_runtime/runtime.c.obj
- *fill*         0x100029da        0x2 
+                0x10002c40       0x12 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_runtime/runtime.c.obj
+ *fill*         0x10002c52        0x2 
  .rodata.hard_assertion_failure.str1.4
-                0x100029dc        0xc CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_runtime/runtime.c.obj
+                0x10002c54        0xc CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_runtime/runtime.c.obj
  .rodata.str1.4
-                0x100029e8       0x3c CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_standard_link/binary_info.c.obj
+                0x10002c60       0x3c CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_standard_link/binary_info.c.obj
  .rodata.__bi_44
-                0x10002a24        0xc CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_standard_link/binary_info.c.obj
+                0x10002c9c        0xc CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_standard_link/binary_info.c.obj
  .rodata.__bi_75
-                0x10002a30        0xc CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_standard_link/binary_info.c.obj
+                0x10002ca8        0xc CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_standard_link/binary_info.c.obj
  .rodata.__bi_81
-                0x10002a3c        0xc CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_standard_link/binary_info.c.obj
+                0x10002cb4        0xc CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_standard_link/binary_info.c.obj
  .rodata.crlf_str.0
-                0x10002a48        0x2 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_stdio/stdio.c.obj
- *fill*         0x10002a4a        0x2 
+                0x10002cc0        0x2 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_stdio/stdio.c.obj
+ *fill*         0x10002cc2        0x2 
  .rodata.str1.4
-                0x10002a4c       0x2c CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c.obj
+                0x10002cc4       0x2c CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c.obj
  .rodata.__bi_33.4
-                0x10002a78        0xc CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c.obj
+                0x10002cf0        0xc CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c.obj
  .rodata.__bi_34.5
-                0x10002a84        0x8 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c.obj
+                0x10002cfc        0x8 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c.obj
  .rodata.str1.4
-                0x10002a8c       0x18 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_bootsel_via_double_reset/pico_bootsel_via_double_reset.c.obj
+                0x10002d04       0x18 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_bootsel_via_double_reset/pico_bootsel_via_double_reset.c.obj
  .rodata.__bi_35
-                0x10002aa4        0xc CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_bootsel_via_double_reset/pico_bootsel_via_double_reset.c.obj
+                0x10002d1c        0xc CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_bootsel_via_double_reset/pico_bootsel_via_double_reset.c.obj
  .rodata.pio_add_program.str1.4
-                0x10002ab0       0x11 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_pio/pio.c.obj
-                0x10002ac4                . = ALIGN (0x4)
- *fill*         0x10002ac1        0x3 
+                0x10002d28       0x11 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_pio/pio.c.obj
+                0x10002d3c                . = ALIGN (0x4)
+ *fill*         0x10002d39        0x3 
  *(SORT_BY_ALIGNMENT(SORT_BY_NAME(.flashdata*)))
-                0x10002ac4                . = ALIGN (0x4)
+                0x10002d3c                . = ALIGN (0x4)
 
 .ARM.extab
  *(.ARM.extab* .gnu.linkonce.armextab.*)
-                0x10002ac4                __exidx_start = .
+                0x10002d3c                __exidx_start = .
 
 .ARM.exidx
  *(.ARM.exidx* .gnu.linkonce.armexidx.*)
-                0x10002ac4                __exidx_end = .
-                0x10002ac4                . = ALIGN (0x4)
-                0x10002ac4                __binary_info_start = .
+                0x10002d3c                __exidx_end = .
+                0x10002d3c                . = ALIGN (0x4)
+                0x10002d3c                __binary_info_start = .
 
-.binary_info    0x10002ac4       0x28
+.binary_info    0x10002d3c       0x28
  *(.binary_info.keep.*)
  .binary_info.keep.__bi_ptr22
-                0x10002ac4        0x4 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_standard_link/binary_info.c.obj
+                0x10002d3c        0x4 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_standard_link/binary_info.c.obj
  .binary_info.keep.__bi_ptr30
-                0x10002ac8        0x4 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_standard_link/binary_info.c.obj
+                0x10002d40        0x4 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_standard_link/binary_info.c.obj
  .binary_info.keep.__bi_ptr38
-                0x10002acc        0x4 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_standard_link/binary_info.c.obj
+                0x10002d44        0x4 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_standard_link/binary_info.c.obj
  .binary_info.keep.__bi_ptr44
-                0x10002ad0        0x4 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_standard_link/binary_info.c.obj
+                0x10002d48        0x4 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_standard_link/binary_info.c.obj
  .binary_info.keep.__bi_ptr50
-                0x10002ad4        0x4 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_standard_link/binary_info.c.obj
+                0x10002d4c        0x4 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_standard_link/binary_info.c.obj
  .binary_info.keep.__bi_ptr75
-                0x10002ad8        0x4 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_standard_link/binary_info.c.obj
+                0x10002d50        0x4 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_standard_link/binary_info.c.obj
  .binary_info.keep.__bi_ptr81
-                0x10002adc        0x4 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_standard_link/binary_info.c.obj
+                0x10002d54        0x4 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_standard_link/binary_info.c.obj
  .binary_info.keep.__bi_ptr35
-                0x10002ae0        0x4 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_bootsel_via_double_reset/pico_bootsel_via_double_reset.c.obj
+                0x10002d58        0x4 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_bootsel_via_double_reset/pico_bootsel_via_double_reset.c.obj
  *(.binary_info.*)
  .binary_info.__bi_ptr33
-                0x10002ae4        0x4 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c.obj
+                0x10002d5c        0x4 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c.obj
  .binary_info.__bi_ptr34
-                0x10002ae8        0x4 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c.obj
-                0x10002aec                __binary_info_end = .
+                0x10002d60        0x4 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c.obj
+                0x10002d64                __binary_info_end = .
 
-.rel.dyn        0x10002aec        0x0
- .rel.iplt      0x10002aec        0x0 c:/progra~2/gnuarm~1/102021~1.10/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v6-m/nofp/crtbegin.o
-                0x10002aec                . = ALIGN (0x4)
+.rel.dyn        0x10002d64        0x0
+ .rel.iplt      0x10002d64        0x0 c:/progra~2/gnuarm~1/102021~1.10/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v6-m/nofp/crtbegin.o
+                0x10002d64                . = ALIGN (0x4)
 
 .ram_vector_table
                 0x20000000       0xc0
@@ -1921,7 +1936,7 @@ LOAD c:/progra~2/gnuarm~1/102021~1.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../
                 0x20000000       0xc0 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_runtime/runtime.c.obj
                 0x20000000                ram_vector_table
 
-.data           0x200000c0      0x1b0 load address 0x10002aec
+.data           0x200000c0      0x1b0 load address 0x10002d64
                 0x200000c0                __data_start__ = .
  *(vtable)
  *(.time_critical*)
@@ -2002,31 +2017,31 @@ LOAD c:/progra~2/gnuarm~1/102021~1.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../
  *(.jcr)
                 0x20000270                . = ALIGN (0x4)
                 0x20000270                __data_end__ = .
-                0x10002aec                __etext = LOADADDR (.data)
+                0x10002d64                __etext = LOADADDR (.data)
 
-.igot.plt       0x20000270        0x0 load address 0x10002c9c
+.igot.plt       0x20000270        0x0 load address 0x10002f14
  .igot.plt      0x20000270        0x0 c:/progra~2/gnuarm~1/102021~1.10/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v6-m/nofp/crtbegin.o
 
 .uninitialized_data
-                0x20000270        0xc load address 0x10002c9c
+                0x20000270        0xc load address 0x10002f14
                 0x20000270                . = ALIGN (0x4)
  *(.uninitialized_data*)
  .uninitialized_data.magic_location
                 0x20000270        0xc CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_bootsel_via_double_reset/pico_bootsel_via_double_reset.c.obj
 
-.scratch_x      0x20040000        0x0 load address 0x10002c9c
+.scratch_x      0x20040000        0x0 load address 0x10002f14
                 0x20040000                __scratch_x_start__ = .
  *(.scratch_x.*)
                 0x20040000                . = ALIGN (0x4)
                 0x20040000                __scratch_x_end__ = .
-                0x10002c9c                __scratch_x_source__ = LOADADDR (.scratch_x)
+                0x10002f14                __scratch_x_source__ = LOADADDR (.scratch_x)
 
-.scratch_y      0x20041000        0x0 load address 0x10002c9c
+.scratch_y      0x20041000        0x0 load address 0x10002f14
                 0x20041000                __scratch_y_start__ = .
  *(.scratch_y.*)
                 0x20041000                . = ALIGN (0x4)
                 0x20041000                __scratch_y_end__ = .
-                0x10002c9c                __scratch_y_source__ = LOADADDR (.scratch_y)
+                0x10002f14                __scratch_y_source__ = LOADADDR (.scratch_y)
 
 .bss            0x20000280    0x25cf0
                 0x20000280                . = ALIGN (0x4)
@@ -2116,8 +2131,8 @@ LOAD c:/progra~2/gnuarm~1/102021~1.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../
  *(.stack*)
  .stack         0x20041000      0x800 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_standard_link/crt0.S.obj
 
-.flash_end      0x10002c9c        0x0
-                0x10002c9c                PROVIDE (__flash_binary_end = .)
+.flash_end      0x10002f14        0x0
+                0x10002f14                PROVIDE (__flash_binary_end = .)
                 0x20040000                __StackLimit = (ORIGIN (RAM) + LENGTH (RAM))
                 0x20041000                __StackOneTop = (ORIGIN (SCRATCH_X) + LENGTH (SCRATCH_X))
                 0x20042000                __StackTop = (ORIGIN (SCRATCH_Y) + LENGTH (SCRATCH_Y))
@@ -2179,7 +2194,7 @@ LOAD CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/
 LOAD CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_adc/adc.c.obj
 LOAD CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_pio/pio.c.obj
 LOAD CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_i2c/i2c.c.obj
-LOAD C:\Users\zl823\AppData\Local\Temp\cc8IxL4X.o
+LOAD C:\Users\zl823\AppData\Local\Temp\ccSi1NTe.o
 LOAD c:/progra~2/gnuarm~1/102021~1.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp\libstdc++.a
 LOAD c:/progra~2/gnuarm~1/102021~1.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp\libm.a
 START GROUP
@@ -2255,35 +2270,37 @@ LOAD linker stubs
  .ARM.attributes
                 0x0000046e       0x22 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_double/double_v1_rom_shim.S.obj
  .ARM.attributes
-                0x00000490       0x22 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_float/float_aeabi.S.obj
+                0x00000490       0x22 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_int64_ops/pico_int64_ops_aeabi.S.obj
  .ARM.attributes
-                0x000004b2       0x2c CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_float/float_init_rom.c.obj
+                0x000004b2       0x22 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_float/float_aeabi.S.obj
  .ARM.attributes
-                0x000004de       0x22 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_float/float_v1_rom_shim.S.obj
+                0x000004d4       0x2c CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_float/float_init_rom.c.obj
  .ARM.attributes
-                0x00000500       0x2c CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_malloc/pico_malloc.c.obj
+                0x00000500       0x22 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_float/float_v1_rom_shim.S.obj
  .ARM.attributes
-                0x0000052c       0x22 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_mem_ops/mem_ops_aeabi.S.obj
+                0x00000522       0x2c CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_malloc/pico_malloc.c.obj
  .ARM.attributes
-                0x0000054e       0x22 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_standard_link/crt0.S.obj
+                0x0000054e       0x22 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_mem_ops/mem_ops_aeabi.S.obj
  .ARM.attributes
-                0x00000570       0x2c CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_standard_link/binary_info.c.obj
+                0x00000570       0x22 CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_standard_link/crt0.S.obj
  .ARM.attributes
-                0x0000059c       0x2c CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_stdio/stdio.c.obj
+                0x00000592       0x2c CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_standard_link/binary_info.c.obj
  .ARM.attributes
-                0x000005c8       0x2c CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c.obj
+                0x000005be       0x2c CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_stdio/stdio.c.obj
  .ARM.attributes
-                0x000005f4       0x2c CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_bootsel_via_double_reset/pico_bootsel_via_double_reset.c.obj
+                0x000005ea       0x2c CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c.obj
  .ARM.attributes
-                0x00000620       0x2c CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_multicore/multicore.c.obj
+                0x00000616       0x2c CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_bootsel_via_double_reset/pico_bootsel_via_double_reset.c.obj
  .ARM.attributes
-                0x0000064c       0x2c CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_pio/pio.c.obj
+                0x00000642       0x2c CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/pico_multicore/multicore.c.obj
  .ARM.attributes
-                0x00000678       0x22 C:\Users\zl823\AppData\Local\Temp\cc8IxL4X.o
+                0x0000066e       0x2c CMakeFiles/final.dir/C_/Users/zl823/Desktop/github/pico-sdk/src/rp2_common/hardware_pio/pio.c.obj
  .ARM.attributes
-                0x0000069a       0x1e c:/progra~2/gnuarm~1/102021~1.10/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v6-m/nofp\libgcc.a(_dvmd_tls.o)
+                0x0000069a       0x22 C:\Users\zl823\AppData\Local\Temp\ccSi1NTe.o
  .ARM.attributes
-                0x000006b8       0x2c c:/progra~2/gnuarm~1/102021~1.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp\libc.a(lib_a-strlen-stub.o)
+                0x000006bc       0x1e c:/progra~2/gnuarm~1/102021~1.10/bin/../lib/gcc/arm-none-eabi/10.3.1/thumb/v6-m/nofp\libgcc.a(_dvmd_tls.o)
+ .ARM.attributes
+                0x000006da       0x2c c:/progra~2/gnuarm~1/102021~1.10/bin/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp\libc.a(lib_a-strlen-stub.o)
 
 .comment        0x00000000       0x49
  .comment       0x00000000       0x49 CMakeFiles/final.dir/main.c.obj

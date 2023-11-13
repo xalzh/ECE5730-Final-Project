@@ -1982,19 +1982,6 @@ final\CMakeFiles\final.dir\main.c.obj: C:\Users\zl823\Desktop\github\pico-sdk\sr
 final\CMakeFiles\final.dir\main.c.obj: C:\Users\zl823\Desktop\github\pico-sdk\src\rp2_common\hardware_pwm\include\hardware\pwm.h
 final\CMakeFiles\final.dir\main.c.obj: C:\Users\zl823\Desktop\github\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\pwm.h
 final\CMakeFiles\final.dir\main.c.obj: C:\Users\zl823\Desktop\github\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\pwm.h
-final\CMakeFiles\final.dir\main.c.obj: C:\Users\zl823\Desktop\github\pico-sdk\src\rp2_common\hardware_dma\include\hardware\dma.h
-final\CMakeFiles\final.dir\main.c.obj: C:\Users\zl823\Desktop\github\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\dma.h
-final\CMakeFiles\final.dir\main.c.obj: C:\Users\zl823\Desktop\github\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\dma.h
-final\CMakeFiles\final.dir\main.c.obj: C:\Users\zl823\Desktop\github\pico-sdk\src\rp2_common\hardware_adc\include\hardware\adc.h
-final\CMakeFiles\final.dir\main.c.obj: C:\Users\zl823\Desktop\github\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\adc.h
-final\CMakeFiles\final.dir\main.c.obj: C:\Users\zl823\Desktop\github\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\adc.h
-final\CMakeFiles\final.dir\main.c.obj: C:\Users\zl823\Desktop\github\pico-sdk\src\rp2_common\hardware_pio\include\hardware\pio.h
-final\CMakeFiles\final.dir\main.c.obj: C:\Users\zl823\Desktop\github\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\pio.h
-final\CMakeFiles\final.dir\main.c.obj: C:\Users\zl823\Desktop\github\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\pio.h
-final\CMakeFiles\final.dir\main.c.obj: C:\Users\zl823\Desktop\github\pico-sdk\src\rp2_common\hardware_pio\include\hardware\pio_instructions.h
-final\CMakeFiles\final.dir\main.c.obj: C:\Users\zl823\Desktop\github\pico-sdk\src\rp2_common\hardware_i2c\include\hardware\i2c.h
-final\CMakeFiles\final.dir\main.c.obj: C:\Users\zl823\Desktop\github\pico-sdk\src\rp2040\hardware_structs\include\hardware\structs\i2c.h
-final\CMakeFiles\final.dir\main.c.obj: C:\Users\zl823\Desktop\github\pico-sdk\src\rp2040\hardware_regs\include\hardware\regs\i2c.h
 final\CMakeFiles\final.dir\main.c.obj: ..\final\vga_graphics.h
 final\CMakeFiles\final.dir\main.c.obj: ..\final\pt_cornell_rp2040_v1.h
 
