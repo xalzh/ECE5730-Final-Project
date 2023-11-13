@@ -40,6 +40,7 @@ const int stepPin = 14;
 const int stepsPerRevolution = 200;
 const int stepPads[4] = {2,3,4,5};
 const int sequence[4] = {3,6,12,9};
+const innt reverse_sequence[4] = {~3, ~6, ~12, ~9};
 
 
 // Interrupt service routine
@@ -85,11 +86,11 @@ static PT_THREAD (protothread_vga(struct pt *pt))
     
     while (true){
         for(int i = 0; i < 4; i ++){
-            int s = sequence[i];
+            int s = reverse_sequence[i];
             for (int j = 0; j < 4; j++){
                 int m = 1 << j;
                 if ((m & s) > 0){
-                    gpio_put(stepPads[j],-1);
+                    gpio_put(stepPads[j],1);
                 }
                 else{
                     gpio_put(stepPads[j],0);
