@@ -40,8 +40,15 @@ const int stepPin = 14;
 const int stepsPerRevolution = 200;
 const int stepPads[4] = {2,3,4,5};
 const int sequence[4] = {3,6,12,9};
-const innt reverse_sequence[4] = {~3, ~6, ~12, ~9};
-
+const int reverse_sequence[4] = {9, 12, 6, 3};
+#define BASE_KEYPAD_PIN 7
+#define KEYROWS         4
+#define NUMKEYS         12
+unsigned int keycodes[12] = {   0x28, 0x11, 0x21, 0x41, 0x12,
+                                0x22, 0x42, 0x14, 0x24, 0x44,
+                                0x18, 0x48} ;
+unsigned int scancodes[4] = {   0x01, 0x02, 0x04, 0x08} ;
+unsigned int button = 0x70 ;
 
 // Interrupt service routine
 void on_pwm_wrap() {
@@ -59,32 +66,48 @@ static PT_THREAD (protothread_vga(struct pt *pt))
     // Indicate start of thread
     PT_BEGIN(pt) ;
 
-    // while(true){
-    //     // Set motor direction clockwise
-    //     gpio_put(dirPin, 1);
-    //     // Spin motor slowly
-    //     for(int x = 0; x < stepsPerRevolution; x++)
-    //     {
-    //         gpio_put(stepPin, 1);
-    //         sleep_us(2000);
-    //         gpio_put(stepPin, 0);
-    //         sleep_us(2000);
-    //     }
-    //     sleep_ms(1000); // Wait a second
-    //     // Set motor direction counterclockwise
-    //     gpio_put(dirPin, 0);
-    //     // Spin motor quickly
-    //     for(int x = 0; x < stepsPerRevolution; x++)
-    //     {
-    //         gpio_put(stepPin, 1);
-    //         sleep_us(2000);
-    //         gpio_put(stepPin, 0);
-    //         sleep_us(2000);
-    //     }
-    //     sleep_ms(1000); // Wait a second
-    // }
-    
-    while (true){
+    for(int i = 0; i < 3; i++){
+        // Set motor direction clockwise
+        gpio_put(dirPin, 1);
+        // Spin motor slowly
+        for(int x = 0; x < stepsPerRevolution; x++)
+        {
+            gpio_put(stepPin, 1);
+            sleep_us(2000);
+            gpio_put(stepPin, 0);
+            sleep_us(2000);
+        }
+        sleep_ms(1000); // Wait a second
+        // Set motor direction counterclockwise
+        gpio_put(dirPin, 0);
+        // Spin motor quickly
+        for(int x = 0; x < stepsPerRevolution; x++)
+        {
+            gpio_put(stepPin, 1);
+            sleep_us(2000);
+            gpio_put(stepPin, 0);
+            sleep_us(2000);
+        }
+        sleep_ms(1000); // Wait a second
+    }
+
+    for(int i = 0; i < 1000; i++){
+        for(int i = 0; i < 4; i ++){
+            int s = sequence[i];
+            for (int j = 0; j < 4; j++){
+                int m = 1 << j;
+                if ((m & s) > 0){
+                    gpio_put(stepPads[j],1);
+                }
+                else{
+                    gpio_put(stepPads[j],0);
+                }
+            }
+            sleep_ms(2);
+        }
+    }
+
+    for(int i = 0; i < 1000; i++){
         for(int i = 0; i < 4; i ++){
             int s = reverse_sequence[i];
             for (int j = 0; j < 4; j++){
@@ -99,6 +122,33 @@ static PT_THREAD (protothread_vga(struct pt *pt))
             sleep_ms(2);
         }
     }
+
+    // Scan the keypad!
+    static int i;
+    static uint32_t keypad ;
+    for (i=0; i<KEYROWS; i++) {
+        // Set a row high
+        gpio_put_masked((0xF << BASE_KEYPAD_PIN),
+                        (scancodes[i] << BASE_KEYPAD_PIN)) ;
+        // Small delay required
+        sleep_us(1) ; 
+        // Read the keycode
+        keypad = ((gpio_get_all() >> BASE_KEYPAD_PIN) & 0x7F) ;
+        // Break if button(s) are pressed
+        if (keypad & button) break ;
+    }
+    // If we found a button . . .
+    if (keypad & button) {
+        // Look for a valid keycode.
+        for (i=0; i<NUMKEYS; i++) {
+            if (keypad == keycodes[i]) break ;
+        }
+        // If we don't find one, report invalid keycode
+        if (i==NUMKEYS) (i = -1) ;
+    }
+    // Otherwise, indicate invalid/non-pressed buttons
+    else (i=-1) ;
+    printf("%d\n",i);
     
 
     // Indicate end of thread
@@ -135,6 +185,17 @@ int main() {
         gpio_set_dir(stepPads[i], GPIO_OUT);
         gpio_put(stepPads[i], 0);
     }
+
+    // Initialize the keypad GPIO's
+    gpio_init_mask((0x7F << BASE_KEYPAD_PIN)) ;
+    // Set row-pins to output
+    gpio_set_dir_out_masked((0xF << BASE_KEYPAD_PIN)) ;
+    // Set all output pins to low
+    gpio_put_masked((0xF << BASE_KEYPAD_PIN), (0x0 << BASE_KEYPAD_PIN)) ;
+    // Turn on pulldown resistors for column pins (on by default)
+    gpio_pull_down((BASE_KEYPAD_PIN + 4)) ;
+    gpio_pull_down((BASE_KEYPAD_PIN + 5)) ;
+    gpio_pull_down((BASE_KEYPAD_PIN + 6)) ;
 
     // Initialize VGA
     initVGA() ;
