@@ -89,7 +89,7 @@ elf2uf2.exe: CMakeFiles\elf2uf2.dir\main.cpp.obj
 elf2uf2.exe: CMakeFiles\elf2uf2.dir\build.make
 elf2uf2.exe: CMakeFiles\elf2uf2.dir\objects1.rsp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=C:\Users\zl823\Desktop\github\ECE5730-Final-Project\build\elf2uf2\CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable elf2uf2.exe"
-	"C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E vs_link_exe --intdir=CMakeFiles\elf2uf2.dir --rc=C:\PROGRA~2\WI3CF2~1\10\bin\100226~1.0\x86\rc.exe --mt=C:\PROGRA~2\WI3CF2~1\10\bin\100226~1.0\x86\mt.exe --manifests -- C:\PROGRA~2\MICROS~3\2019\BUILDT~1\VC\Tools\MSVC\1429~1.301\bin\Hostx86\x86\link.exe /nologo @CMakeFiles\elf2uf2.dir\objects1.rsp @<<
+	"C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E vs_link_exe --intdir=CMakeFiles\elf2uf2.dir --rc=C:\PROGRA~2\WI3CF2~1\10\bin\100190~1.0\x86\rc.exe --mt=C:\PROGRA~2\WI3CF2~1\10\bin\100190~1.0\x86\mt.exe --manifests -- C:\PROGRA~2\MICROS~3\2019\BUILDT~1\VC\Tools\MSVC\1429~1.301\bin\Hostx86\x86\link.exe /nologo @CMakeFiles\elf2uf2.dir\objects1.rsp @<<
  /out:elf2uf2.exe /implib:elf2uf2.lib /pdb:C:\Users\zl823\Desktop\github\ECE5730-Final-Project\build\elf2uf2\elf2uf2.pdb /version:0.0 /machine:X86 /debug /INCREMENTAL /subsystem:console  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib 
 <<
 

@@ -1,18 +1,18 @@
 /**
 
  * HARDWARE CONNECTIONS
- *  - GPIO 2  ---> IN2 on the ULN2003 Driver Board
- *  - GPIO 3  ---> IN3 on the ULN2003 Driver Board
- *  - GPIO 4  ---> IN4 on the ULN2003 Driver Board
+   - GPIO 2  ---> IN2 on the ULN2003 Driver Board
+   - GPIO 3  ---> IN3 on the ULN2003 Driver Board
+   - GPIO 4  ---> IN4 on the ULN2003 Driver Board
 
- *  - GPIO 2  ---> IN2 on the ULN2003 Driver Board
+   - GPIO 2  ---> IN2 on the ULN2003 Driver Board
 
- *  - GPIO 16 ---> VGA Hsync
- *  - GPIO 17 ---> VGA Vsync
- *  - GPIO 18 ---> 330 ohm resistor ---> VGA Red
- *  - GPIO 19 ---> 330 ohm resistor ---> VGA Green
- *  - GPIO 20 ---> 330 ohm resistor ---> VGA Blue
- *  - RP2040 GND ---> VGA GND
+   - GPIO 16 ---> VGA Hsync
+   - GPIO 17 ---> VGA Vsync
+   - GPIO 18 ---> 330 ohm resistor ---> VGA Red
+   - GPIO 19 ---> 330 ohm resistor ---> VGA Green
+   - GPIO 20 ---> 330 ohm resistor ---> VGA Blue
+   - RP2040 GND ---> VGA GND
 
  */
 
@@ -45,7 +45,7 @@ typedef signed int fix15 ;
 #define max(a,b) ((a<b) ? b:a)
 #define abs(a) ((a>0) ? a:-a)
 #define SIGN(x) ((x > 0) - (x < 0))
-#define PI 3.14159265358979323846
+#define PI 3.14159
 
 // semaphore
 static struct pt_sem vga_semaphore;
@@ -71,15 +71,19 @@ unsigned int button = 0x70 ;
 int up = 0;
 int down = 0;
 int s;
+int stop = 0; // stop flag for the rotation
+int step_idx = 0;
 
 // Interrupt service routine
 void on_pwm_wrap() {
-
     // Clear the interrupt flag that brought us here
     pwm_clear_irq(pwm_gpio_to_slice_num(5));
-
     // Signal VGA to draw
     PT_SEM_SIGNAL(pt, &vga_semaphore);
+}
+
+void draw_UI(){
+    drawRect(440, 200, 200, 280, WHITE);
 }
 
 // Thread that draws to VGA display
@@ -104,13 +108,14 @@ static PT_THREAD (protothread_vga(struct pt *pt))
         begin_time = time_us_32() ;      
         // draw circle
         drawCircle(320, 240, redius, WHITE);
+        drawLine(320, 240, new_x, new_y, BLACK);
         new_x = 320 + redius * sin(degree*PI/180);
         new_y = 240 + redius * cos(degree*PI/180);
-        //printf("%d, %d\n",new_x,new_y);
-        //printf("%f\n",degree);
         drawLine(320, 240, new_x, new_y, WHITE);
         spare_time = FRAME_RATE - (time_us_32() - begin_time) ;
-
+        setCursor(250, 400);
+        setTextColor2(BLACK, BLACK);
+        writeString(deg);
         setCursor(250, 400);
         setTextColor2(WHITE, BLACK);
         sprintf(deg, "%s%.2f", "Current Degree is ", degree);
@@ -148,11 +153,18 @@ static PT_THREAD (protothread_vga(struct pt *pt))
                 page = 2; // go to the lift page
             }
         }else if (page == 1){ // at the rotate page
-            if (idx <= 9 && 0 <= idx && old_idx != idx){ // integer
+            printf("stop: %d, old_idx: %d, idx: %d. \n",stop,old_idx,idx);
+            if (stop == 1 && old_idx != idx){
+                if (idx == 0){
+                    stop = 0;
+                }
+            }
+            else if (idx <= 9 && 0 <= idx && old_idx != idx){ // integer
                 temp_step = temp_step * 10 + idx;
-            }else if (idx == 10){ // confirm
+            }else if (idx == 10 && old_idx != idx){ // confirm
                 stepsPerRevolution = temp_step;
                 rotate_flag = 1;
+                temp_step = 0;
             }else if (idx == 11){ // go back
                 page = 0;
             }
@@ -170,12 +182,10 @@ static PT_THREAD (protothread_vga(struct pt *pt))
         
         old_idx = idx;
 
+        draw_UI();
+
         // yield for necessary amount of time
         PT_YIELD_usec(spare_time) ;
-        drawLine(320, 240, new_x, new_y, BLACK);
-        setCursor(250, 400);
-        setTextColor2(BLACK, BLACK);
-        writeString(deg);
     } // END WHILE(1)
     
 
@@ -188,37 +198,57 @@ static PT_THREAD (protothread_serial(struct pt *pt))
     // Indicate start of thread
     PT_BEGIN(pt) ;
 
-    // Motor Rotation
-    if (rotate_flag == 1){
-        int step = 200 / stepsPerRevolution;
-        for(int i = 0; i < step; i++){
-            // Set motor direction clockwise
-            gpio_put(dirPin, 1);
-            // Spin motor
-            printf("%f",degree);
-            degree += stepsPerRevolution * 1.8;
-            for(int x = 0; x < stepsPerRevolution; x++){
-                gpio_put(stepPin, 1);
-                sleep_us(2000);
-                gpio_put(stepPin, 0);
-                sleep_us(2000);
-            }
-            sleep_ms(500);
+    // Motor Rotation auto solution
+    // if (rotate_flag == 1){
+    //     int step = 200 / stepsPerRevolution;
+    //     for(int i = 0; i < step; i++){
+    //         // Set motor direction clockwise
+    //         gpio_put(dirPin, 1);
+    //         // Spin motor
+    //         printf("%f",degree);
+    //         degree += stepsPerRevolution * 1.8;
+    //         for(int x = 0; x < stepsPerRevolution; x++){
+    //             gpio_put(stepPin, 1);
+    //             sleep_us(2000);
+    //             gpio_put(stepPin, 0);
+    //             sleep_us(2000);
+    //         }
+    //         sleep_ms(500);
+    //     }
+    //     rotate_flag = 0;
+    //     degree = 0.0;
+    // }
+
+    if (rotate_flag == 1 && stop == 0){
+        printf("???");
+        //Set motor direction clockwise
+        gpio_put(dirPin, 1);
+        // Spin motor
+        printf("%f",degree);
+        degree += stepsPerRevolution * 1.8;
+        for(int x = 0; x < stepsPerRevolution; x++){
+            gpio_put(stepPin, 1);
+            sleep_us(2000);
+            gpio_put(stepPin, 0);
+            sleep_us(2000);
         }
-        rotate_flag = 0;
-        degree = 0.0;
+        stop = 1;
+        if (degree >= 360.0){
+            rotate_flag = 0;
+            degree = 0.0;
+        }
     }
 
 
     // Motor Lift
     if (up == 1 || down == 1){
-        for(int i = 0; i < 4; i ++){
+        for (int k = 0; k < 650; k++){
+            for(int i = 0; i < 4; i ++){
             if (up == 1){
                 s = reverse_sequence[i];
             }else if (down == 1){
                 s = sequence[i];
             }
-            
             for (int j = 0; j < 4; j++){
                 int m = 1 << j;
                 if ((m & s) > 0){
@@ -229,6 +259,7 @@ static PT_THREAD (protothread_serial(struct pt *pt))
                 }
             }
             sleep_ms(2);
+            }
         }
         up = 0;
         down = 0;
