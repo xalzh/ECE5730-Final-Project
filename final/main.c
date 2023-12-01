@@ -68,8 +68,8 @@ unsigned int keycodes[12] = {   0x28, 0x11, 0x21, 0x41, 0x12,
                                 0x18, 0x48} ;
 unsigned int scancodes[4] = {   0x01, 0x02, 0x04, 0x08} ;
 unsigned int button = 0x70 ;
-int up = 0;
-int down = 0;
+char lift[50];
+char page[50] = "Main Page";
 int s;
 int stop = 0; // stop flag for the rotation
 int step_idx = 0;
@@ -86,6 +86,52 @@ void draw_UI(){
     drawRect(440, 200, 200, 280, WHITE);
 }
 
+void detect_keypad(){
+    //Scan the keypad!
+    static uint32_t keypad ;
+    for (idx=0; idx<KEYROWS; idx++) {
+        // Set a row high
+        gpio_put_masked((0xF << BASE_KEYPAD_PIN),
+                        (scancodes[idx] << BASE_KEYPAD_PIN)) ;
+        // Small delay required
+        sleep_us(1) ; 
+        // Read the keycode
+        keypad = ((gpio_get_all() >> BASE_KEYPAD_PIN) & 0x7F) ;
+        // Break if button(s) are pressed
+        if (keypad & button) break ;
+    }
+    // If we found a button . . .
+    if (keypad & button) {
+        // Look for a valid keycode.
+        for (idx=0; idx<NUMKEYS; idx++) {
+            if (keypad == keycodes[idx]) break ;
+        }
+        // If we don't find one, report invalid keycode
+        if (idx==NUMKEYS) (idx = -1) ;
+    }
+    // Otherwise, indicate invalid/non-pressed buttons
+    else (idx=-1) ;
+}
+
+void draw_rotation_platform(){
+    // draw circle
+    drawCircle(320, 240, redius, WHITE);
+    drawLine(320, 240, new_x, new_y, BLACK);
+    new_x = 320 + redius * sin(degree*PI/180);
+    new_y = 240 + redius * cos(degree*PI/180);
+    drawLine(320, 240, new_x, new_y, WHITE);
+}
+
+void draw_rotation_text(){
+    setCursor(250, 400);
+    setTextColor2(BLACK, BLACK);
+    writeString(deg);
+    setCursor(250, 400);
+    setTextColor2(WHITE, BLACK);
+    sprintf(deg, "%s%.2f", "Current Degree is ", degree);
+    writeString(deg);
+}
+
 // Thread that draws to VGA display
 static PT_THREAD (protothread_vga(struct pt *pt))
 {
@@ -99,91 +145,72 @@ static PT_THREAD (protothread_vga(struct pt *pt))
     static int new_y ;
     setTextSize(1);
     char deg[50];
-    int page = 0;
     int temp_step = 0;
     int old_idx;
+    draw_rotation_platform();
+    draw_rotation_text();
 
     while(1) {
         // Measure time at start of thread
-        begin_time = time_us_32() ;      
-        // draw circle
-        drawCircle(320, 240, redius, WHITE);
-        drawLine(320, 240, new_x, new_y, BLACK);
-        new_x = 320 + redius * sin(degree*PI/180);
-        new_y = 240 + redius * cos(degree*PI/180);
-        drawLine(320, 240, new_x, new_y, WHITE);
-        spare_time = FRAME_RATE - (time_us_32() - begin_time) ;
-        setCursor(250, 400);
-        setTextColor2(BLACK, BLACK);
-        writeString(deg);
-        setCursor(250, 400);
-        setTextColor2(WHITE, BLACK);
-        sprintf(deg, "%s%.2f", "Current Degree is ", degree);
-        writeString(deg);
+        begin_time = time_us_32();
 
-        //Scan the keypad!
-        static uint32_t keypad ;
-        for (idx=0; idx<KEYROWS; idx++) {
-            // Set a row high
-            gpio_put_masked((0xF << BASE_KEYPAD_PIN),
-                            (scancodes[idx] << BASE_KEYPAD_PIN)) ;
-            // Small delay required
-            sleep_us(1) ; 
-            // Read the keycode
-            keypad = ((gpio_get_all() >> BASE_KEYPAD_PIN) & 0x7F) ;
-            // Break if button(s) are pressed
-            if (keypad & button) break ;
-        }
-        // If we found a button . . .
-        if (keypad & button) {
-            // Look for a valid keycode.
-            for (idx=0; idx<NUMKEYS; idx++) {
-                if (keypad == keycodes[idx]) break ;
-            }
-            // If we don't find one, report invalid keycode
-            if (idx==NUMKEYS) (idx = -1) ;
-        }
-        // Otherwise, indicate invalid/non-pressed buttons
-        else (idx=-1) ;
+        detect_keypad();
 
-        if (page == 0){ // at main page, 1 for rotate, 2 for lift, 3 for auto
-            if (idx == 1){
-                page = 1; // go to the rotate page
-            }else if (idx == 2){
-                page = 2; // go to the lift page
-            }
-        }else if (page == 1){ // at the rotate page
-            printf("stop: %d, old_idx: %d, idx: %d. \n",stop,old_idx,idx);
-            if (stop == 1 && old_idx != idx){
-                if (idx == 0){
-                    stop = 0;
+        switch(page){
+            case "Main Page":
+                if (idx == 1){
+                    page = "Manual Page"; // go to the manual page
+                }else if (idx == 2){
+                    page = "Auto Page"; // go to the auto page
                 }
-            }
-            else if (idx <= 9 && 0 <= idx && old_idx != idx){ // integer
-                temp_step = temp_step * 10 + idx;
-            }else if (idx == 10 && old_idx != idx){ // confirm
-                stepsPerRevolution = temp_step;
-                rotate_flag = 1;
-                temp_step = 0;
-            }else if (idx == 11){ // go back
-                page = 0;
-            }
-        }else if (page == 2){ // at the lift page
-            if (idx == 2){ // go up
-                up = 1;
-            }else if (idx == 5){ // go down
-                down = 1;
-            }else if (idx == 11){ // go back
-                page = 0;
-            }
+                break;
+            case "Manual Page":
+                if (idx == 1){
+                    page = "Manual Rotation Page"; // go to the rotation page
+                }else if (idx == 2){
+                    page = "Manual Lift Page"; // go to the lift page
+                }else if (idx == 11){
+                    page = "Main Page"; // go back to the main page
+                }
+                break;
+            case "Manual Rotation Page":
+                if (stop == 1 && old_idx != idx){
+                    if (idx == 0){stop = 0;}
+                }
+                else if (idx <= 9 && 0 <= idx && old_idx != idx){ // integer
+                    temp_step = temp_step * 10 + idx;
+                }else if (idx == 10 && old_idx != idx){ // confirm
+                    stepsPerRevolution = temp_step;
+                    rotate_flag = 1;
+                    temp_step = 0;
+                }else if (idx == 11){ // go back to the manual page
+                    page = "Manual Page";
+                }
+                break;
+            case "Manual Lift Page":
+                if (idx == 2){ // go up manually
+                    lift = "up_manual";
+                }else if (idx == 5){ // go down manually
+                    lift = "down_manual";
+                }else if (idx == 3){ // go up by 1cm
+                    lift = "up_1cm";
+                }else if (idx == 6){ // go down by 1cm
+                    lift = "down_1cm";
+                }else if (idx == 11){ // go back to the manual page
+                    page = "Manual Page";
+                }
+                break;
+            case "Auto Page":
+                break;
+            default:
+                break;
         }
-
-        printf("%d %d %f\n",page, temp_step, degree);
         
+        printf("%d %d %f\n",page, temp_step, degree);
         old_idx = idx;
-
         draw_UI();
 
+        spare_time = FRAME_RATE - (time_us_32() - begin_time) ;
         // yield for necessary amount of time
         PT_YIELD_usec(spare_time) ;
     } // END WHILE(1)
@@ -220,12 +247,12 @@ static PT_THREAD (protothread_serial(struct pt *pt))
     // }
 
     if (rotate_flag == 1 && stop == 0){
-        printf("???");
         //Set motor direction clockwise
         gpio_put(dirPin, 1);
         // Spin motor
-        printf("%f",degree);
         degree += stepsPerRevolution * 1.8;
+        draw_rotation_platform();
+        draw_rotation_text();
         for(int x = 0; x < stepsPerRevolution; x++){
             gpio_put(stepPin, 1);
             sleep_us(2000);
@@ -239,30 +266,62 @@ static PT_THREAD (protothread_serial(struct pt *pt))
         }
     }
 
-
     // Motor Lift
-    if (up == 1 || down == 1){
-        for (int k = 0; k < 650; k++){
+    switch (lift){
+        case "up_manual":
             for(int i = 0; i < 4; i ++){
-            if (up == 1){
-                s = reverse_sequence[i];
-            }else if (down == 1){
-                s = sequence[i];
-            }
+            s = reverse_sequence[i];
             for (int j = 0; j < 4; j++){
                 int m = 1 << j;
-                if ((m & s) > 0){
-                    gpio_put(stepPads[j],1);
-                }
-                else{
-                    gpio_put(stepPads[j],0);
-                }
+                if ((m & s) > 0){gpio_put(stepPads[j],1);}
+                else{gpio_put(stepPads[j],0);}
             }
             sleep_ms(2);
             }
-        }
-        up = 0;
-        down = 0;
+            lift = "stop";
+            break;
+        case "down_manual":
+            for(int i = 0; i < 4; i ++){
+            s = sequence[i];
+            for (int j = 0; j < 4; j++){
+                int m = 1 << j;
+                if ((m & s) > 0){gpio_put(stepPads[j],1);}
+                else{gpio_put(stepPads[j],0);}
+            }
+            sleep_ms(2);
+            }
+            lift = "stop";
+            break;
+        case "up_1cm":
+            for (int k = 0; k < 650; k++){
+                for(int i = 0; i < 4; i ++){
+                s = reverse_sequence[i];
+                for (int j = 0; j < 4; j++){
+                    int m = 1 << j;
+                    if ((m & s) > 0){gpio_put(stepPads[j],1);}
+                    else{gpio_put(stepPads[j],0);}
+                }
+                sleep_ms(2);
+                }
+            }
+            lift = "stop";
+            break;
+        case "down_1cm":
+            for (int k = 0; k < 650; k++){
+                for(int i = 0; i < 4; i ++){
+                s = sequence[i];
+                for (int j = 0; j < 4; j++){
+                    int m = 1 << j;
+                    if ((m & s) > 0){gpio_put(stepPads[j],1);}
+                    else{gpio_put(stepPads[j],0);}
+                }
+                sleep_ms(2);
+                }
+            }
+            lift = "stop";
+            break;
+        default:
+            break;
     }
 
     // Indicate end of thread
