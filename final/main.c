@@ -71,6 +71,7 @@ unsigned int button = 0x70 ;
 int lift = 0; // stop the lift
 int page = 0; // Main Page
 int stop = 0; // stop flag for the rotation
+int temp_step = 0;
 static int new_x ; // new end x pos of the pointer on the circle
 static int new_y ;  // new end y pos of the pointer on the circle
 char deg[50]; // degree in string
@@ -115,7 +116,7 @@ void draw_UI(){
             setCursor(450, 270);
             writeString("#. Back");
             setCursor(450, 290);
-            weirwString(temp);
+            writeString(temp);
             break;
         case 12: // at Manual Lift Page
             writeString("Manual Lift Page");
@@ -192,7 +193,6 @@ static PT_THREAD (protothread_vga(struct pt *pt))
     static int spare_time ;
     setTextSize(1);
     
-    int temp_step = 0;
     int old_idx;
     sprintf(temp, "%s%.2f", "Current Degree is ", temp_step*1.8);
     draw_rotation_platform();
@@ -238,12 +238,16 @@ static PT_THREAD (protothread_vga(struct pt *pt))
                     }
                     else if (idx <= 9 && 0 <= idx){ // integer
                         temp_step = temp_step * 10 + idx;
+                        if (temp_step > 200){
+                            temp_step = 200;
+                        }
                         sprintf(temp, "%s%.2f", "Degree Selection:  ", temp_step*1.8);
                         draw_UI();
                     }else if (idx == 10){ // confirm
                         stepsPerRevolution = temp_step;
                         rotate_flag = 1;
                         temp_step = 0;
+                        stop = 0;
                     }else if (idx == 11){ // go back to the manual page
                         page = 1; // go to manual page
                         temp_step = 0;
@@ -331,13 +335,15 @@ static PT_THREAD (protothread_serial(struct pt *pt))
             gpio_put(stepPin, 0);
             sleep_us(2000);
         }
-        stop = 1;
         if (degree >= 360.0){
             rotate_flag = 0;
             degree = 0.0;
             sprintf(temp, "%s%.2f", "Current Degree is ", temp_step*1.8);
             draw_UI();
+            draw_rotation_platform();
+            draw_rotation_text();
         }
+        stop = 1;
     }
 
     // Motor Lift
