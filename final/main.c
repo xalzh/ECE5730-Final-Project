@@ -48,17 +48,17 @@ typedef signed int fix15 ;
 #define PI 3.14159
 
 // semaphore
-static struct pt_sem vga_semaphore;
-const int dirPin = 15;
-const int stepPin = 14;
-int stepsPerRevolution = 5;
-const int stepPads[4] = {2,3,4,5};
-const int sequence[4] = {3,6,12,9};
-const int reverse_sequence[4] = {9, 12, 6, 3};
-float degree = 0.0;
-int redius = 100;
+static struct pt_sem vga_semaphore; // VGA drawing semaphore
+const int dirPin = 15; // direction pin
+const int stepPin = 14; // step pin
+int stepsPerRevolution; // Steps per revolution
+const int stepPads[4] = {2,3,4,5}; // step pads
+const int sequence[4] = {3,6,12,9}; // sequence for the lift
+const int reverse_sequence[4] = {9, 12, 6, 3}; // reverse sequence for the lift
+float degree = 0.0; // degree of the rotation
+int redius = 100; // redius of the circle
 int rotate_flag = 0; // flag to rotate the plate
-#define FRAME_RATE 33333
+#define FRAME_RATE 16667 // 60 Hz frame rate
 #define BASE_KEYPAD_PIN 7
 #define KEYROWS         4
 #define NUMKEYS         12
@@ -70,9 +70,7 @@ unsigned int scancodes[4] = {   0x01, 0x02, 0x04, 0x08} ;
 unsigned int button = 0x70 ;
 int lift = 0; // stop the lift
 int page = 0; // Main Page
-int s;
 int stop = 0; // stop flag for the rotation
-int step_idx = 0;
 static int new_x ; // new end x pos of the pointer on the circle
 static int new_y ;  // new end y pos of the pointer on the circle
 char deg[50]; // degree in string
@@ -284,6 +282,7 @@ static PT_THREAD (protothread_serial(struct pt *pt))
 {
     // Indicate start of thread
     PT_BEGIN(pt) ;
+    int s; // step
 
     // Motor Rotation auto solution
     // if (rotate_flag == 1){
