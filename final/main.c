@@ -74,6 +74,7 @@ int stop = 0; // stop flag for the rotation
 static int new_x ; // new end x pos of the pointer on the circle
 static int new_y ;  // new end y pos of the pointer on the circle
 char deg[50]; // degree in string
+char temp[50]; // temp string for rotation degree
 
 // Interrupt service routine
 void on_pwm_wrap() {
@@ -113,6 +114,8 @@ void draw_UI(){
             writeString("*. Confirm");
             setCursor(450, 270);
             writeString("#. Back");
+            setCursor(450, 290);
+            weirwString(temp);
             break;
         case 12: // at Manual Lift Page
             writeString("Manual Lift Page");
@@ -234,6 +237,8 @@ static PT_THREAD (protothread_vga(struct pt *pt))
                     }
                     else if (idx <= 9 && 0 <= idx){ // integer
                         temp_step = temp_step * 10 + idx;
+                        sprintf(temp, "%s%.2f", "Current Degree is ", temp_step);
+                        draw_UI();
                     }else if (idx == 10){ // confirm
                         stepsPerRevolution = temp_step;
                         rotate_flag = 1;
