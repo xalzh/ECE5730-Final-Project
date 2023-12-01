@@ -68,11 +68,14 @@ unsigned int keycodes[12] = {   0x28, 0x11, 0x21, 0x41, 0x12,
                                 0x18, 0x48} ;
 unsigned int scancodes[4] = {   0x01, 0x02, 0x04, 0x08} ;
 unsigned int button = 0x70 ;
-char lift[50];
-char page[50] = "Main Page";
+int lift = 0; // stop the lift
+int page = 0; // Main Page
 int s;
 int stop = 0; // stop flag for the rotation
 int step_idx = 0;
+static int new_x ; // new end x pos of the pointer on the circle
+static int new_y ;  // new end y pos of the pointer on the circle
+char deg[50]; // degree in string
 
 // Interrupt service routine
 void on_pwm_wrap() {
@@ -88,14 +91,14 @@ void draw_UI(){
     setCursor(450, 210);
     setTextColor2(WHITE, BLACK);
     switch (page){
-        case "Main Page":
+        case 0: // at Main Page
             writeString("Main Page");
             setCursor(450, 230);
             writeString("1. Manual");
             setCursor(450, 250);
             writeString("2. Auto");
             break;
-        case "Manual Page":
+        case 1: // at Manual Page
             writeString("Manual Page");
             setCursor(450, 230);
             writeString("1. Rotation");
@@ -104,7 +107,7 @@ void draw_UI(){
             setCursor(450, 270);
             writeString("#. Back");
             break;
-        case "Manual Rotation Page":
+        case 11: // at Manual Rotation Page
             writeString("Manual Rotation Page");
             setCursor(450, 230);
             writeString("0-9. Input");
@@ -113,7 +116,7 @@ void draw_UI(){
             setCursor(450, 270);
             writeString("#. Back");
             break;
-        case "Manual Lift Page":
+        case 12: // at Manual Lift Page
             writeString("Manual Lift Page");
             setCursor(450, 230);
             writeString("2. Up");
@@ -126,7 +129,7 @@ void draw_UI(){
             setCursor(450, 310);
             writeString("#. Back");
             break;
-        case "Auto Page":
+        case 2: // at Auro Page
             writeString("Auto Page");
             break;
     }
@@ -186,10 +189,8 @@ static PT_THREAD (protothread_vga(struct pt *pt))
     // Variables for maintaining frame rate
     static int begin_time ;
     static int spare_time ;
-    static int new_x ;
-    static int new_y ;
     setTextSize(1);
-    char deg[50];
+    
     int temp_step = 0;
     int old_idx;
     draw_rotation_platform();
@@ -203,28 +204,28 @@ static PT_THREAD (protothread_vga(struct pt *pt))
         detect_keypad();
 
         switch(page){
-            case "Main Page":
+            case 0: // at Main Page
                 if (idx == 1){
-                    page = "Manual Page"; // go to the manual page
+                    page = 1; // go to the manual page
                     draw_UI();
                 }else if (idx == 2){
-                    page = "Auto Page"; // go to the auto page
+                    page = 2; // go to the auto page
                     draw_UI();
                 }
                 break;
-            case "Manual Page":
+            case 1: // at Manual Page
                 if (idx == 1){
-                    page = "Manual Rotation Page"; // go to the rotation page
+                    page = 11; // go to the rotation page
                     draw_UI();
                 }else if (idx == 2){
-                    page = "Manual Lift Page"; // go to the lift page
+                    page = 12; // go to the lift page
                     draw_UI();
                 }else if (idx == 11){
-                    page = "Main Page"; // go back to the main page
+                    page = 0; // go back to the main page
                     draw_UI();
                 }
                 break;
-            case "Manual Rotation Page":
+            case 11: // at Manual Rotation Page
                 if (stop == 1 && old_idx != idx && idx == 0){ // continue to rotate by one step
                     stop = 0;
                 }
@@ -235,29 +236,32 @@ static PT_THREAD (protothread_vga(struct pt *pt))
                     rotate_flag = 1;
                     temp_step = 0;
                 }else if (idx == 11){ // go back to the manual page
-                    page = "Manual Page";
+                    page = 1; // go to manual page
                     temp_step = 0;
                     rotate_flag = 0;
                     stop = 1;
                     draw_UI();
                 }
                 break;
-            case "Manual Lift Page":
+            case 12:
                 if (idx == 2){ // go up manually
-                    lift = "up_manual";
+                    lift = 1; // up manual
                 }else if (idx == 5){ // go down manually
-                    lift = "down_manual";
+                    lift = 2; // down manual
                 }else if (idx == 3){ // go up by 1cm
-                    lift = "up_1cm";
+                    lift = 3; // up by 1cm
                 }else if (idx == 6){ // go down by 1cm
-                    lift = "down_1cm";
+                    lift = 4; // down by 1cm
                 }else if (idx == 11){ // go back to the manual page
-                    page = "Manual Page";
-                    lift = "stop";
+                    page = 1; // go to the manual page
+                    lift = 0; // stop the lift
                     draw_UI();
                 }
                 break;
-            case "Auto Page":
+            case 2:
+                if (idx == 11){ // go back to the Main Page
+                    page = 0; // go to the main page
+                }
                 break;
             default:
                 break;
@@ -324,7 +328,7 @@ static PT_THREAD (protothread_serial(struct pt *pt))
 
     // Motor Lift
     switch (lift){
-        case "up_manual":
+        case 1: // if up manual
             for(int i = 0; i < 4; i ++){
             s = reverse_sequence[i];
             for (int j = 0; j < 4; j++){
@@ -334,9 +338,9 @@ static PT_THREAD (protothread_serial(struct pt *pt))
             }
             sleep_ms(2);
             }
-            lift = "stop";
+            lift = 0; // stop the lift
             break;
-        case "down_manual":
+        case 2: // if down manual
             for(int i = 0; i < 4; i ++){
             s = sequence[i];
             for (int j = 0; j < 4; j++){
@@ -346,9 +350,9 @@ static PT_THREAD (protothread_serial(struct pt *pt))
             }
             sleep_ms(2);
             }
-            lift = "stop";
+            lift = 0; // stop the lift
             break;
-        case "up_1cm":
+        case 3: // if up by 1cm
             for (int k = 0; k < 650; k++){
                 for(int i = 0; i < 4; i ++){
                 s = reverse_sequence[i];
@@ -360,9 +364,9 @@ static PT_THREAD (protothread_serial(struct pt *pt))
                 sleep_ms(2);
                 }
             }
-            lift = "stop";
+            lift = 0; // stop the lift
             break;
-        case "down_1cm":
+        case 4: // if down by 1cm
             for (int k = 0; k < 650; k++){
                 for(int i = 0; i < 4; i ++){
                 s = sequence[i];
@@ -374,7 +378,7 @@ static PT_THREAD (protothread_serial(struct pt *pt))
                 sleep_ms(2);
                 }
             }
-            lift = "stop";
+            lift = 0; // stop the lift
             break;
         default:
             break;
