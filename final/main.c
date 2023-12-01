@@ -194,6 +194,7 @@ static PT_THREAD (protothread_vga(struct pt *pt))
     
     int temp_step = 0;
     int old_idx;
+    sprintf(temp, "%s%.2f", "Current Degree is ", temp_step*1.8);
     draw_rotation_platform();
     draw_rotation_text();
     draw_UI();
@@ -237,7 +238,7 @@ static PT_THREAD (protothread_vga(struct pt *pt))
                     }
                     else if (idx <= 9 && 0 <= idx){ // integer
                         temp_step = temp_step * 10 + idx;
-                        sprintf(temp, "%s%.2f", "Current Degree is ", temp_step*1.8);
+                        sprintf(temp, "%s%.2f", "Degree Selection:  ", temp_step*1.8);
                         draw_UI();
                     }else if (idx == 10){ // confirm
                         stepsPerRevolution = temp_step;
@@ -248,6 +249,7 @@ static PT_THREAD (protothread_vga(struct pt *pt))
                         temp_step = 0;
                         rotate_flag = 0;
                         stop = 1;
+                        sprintf(temp, "%s%.2f", "Degree Selection:  ", temp_step*1.8);
                         draw_UI();
                     }
                 }
@@ -333,6 +335,8 @@ static PT_THREAD (protothread_serial(struct pt *pt))
         if (degree >= 360.0){
             rotate_flag = 0;
             degree = 0.0;
+            sprintf(temp, "%s%.2f", "Current Degree is ", temp_step*1.8);
+            draw_UI();
         }
     }
 
