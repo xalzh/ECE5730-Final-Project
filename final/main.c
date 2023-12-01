@@ -83,7 +83,53 @@ void on_pwm_wrap() {
 }
 
 void draw_UI(){
+    fillRect(440, 200, 200, 280, BLACK);
     drawRect(440, 200, 200, 280, WHITE);
+    setCursor(450, 210);
+    setTextColor2(WHITE, BLACK);
+    switch (page){
+        case "Main Page":
+            writeString("Main Page");
+            setCursor(450, 230);
+            writeString("1. Manual");
+            setCursor(450, 250);
+            writeString("2. Auto");
+            break;
+        case "Manual Page":
+            writeString("Manual Page");
+            setCursor(450, 230);
+            writeString("1. Rotation");
+            setCursor(450, 250);
+            writeString("2. Lift");
+            setCursor(450, 270);
+            writeString("#. Back");
+            break;
+        case "Manual Rotation Page":
+            writeString("Manual Rotation Page");
+            setCursor(450, 230);
+            writeString("0-9. Input");
+            setCursor(450, 250);
+            writeString("*. Confirm");
+            setCursor(450, 270);
+            writeString("#. Back");
+            break;
+        case "Manual Lift Page":
+            writeString("Manual Lift Page");
+            setCursor(450, 230);
+            writeString("2. Up");
+            setCursor(450, 250);
+            writeString("5. Down");
+            setCursor(450, 270);
+            writeString("3. Up 1cm");
+            setCursor(450, 290);
+            writeString("6. Down 1cm");
+            setCursor(450, 310);
+            writeString("#. Back");
+            break;
+        case "Auto Page":
+            writeString("Auto Page");
+            break;
+    }
 }
 
 void detect_keypad(){
@@ -137,7 +183,6 @@ static PT_THREAD (protothread_vga(struct pt *pt))
 {
     // Indicate start of thread
     PT_BEGIN(pt) ;
-
     // Variables for maintaining frame rate
     static int begin_time ;
     static int spare_time ;
@@ -149,6 +194,7 @@ static PT_THREAD (protothread_vga(struct pt *pt))
     int old_idx;
     draw_rotation_platform();
     draw_rotation_text();
+    draw_UI();
 
     while(1) {
         // Measure time at start of thread
@@ -160,22 +206,27 @@ static PT_THREAD (protothread_vga(struct pt *pt))
             case "Main Page":
                 if (idx == 1){
                     page = "Manual Page"; // go to the manual page
+                    draw_UI();
                 }else if (idx == 2){
                     page = "Auto Page"; // go to the auto page
+                    draw_UI();
                 }
                 break;
             case "Manual Page":
                 if (idx == 1){
                     page = "Manual Rotation Page"; // go to the rotation page
+                    draw_UI();
                 }else if (idx == 2){
                     page = "Manual Lift Page"; // go to the lift page
+                    draw_UI();
                 }else if (idx == 11){
                     page = "Main Page"; // go back to the main page
+                    draw_UI();
                 }
                 break;
             case "Manual Rotation Page":
-                if (stop == 1 && old_idx != idx){
-                    if (idx == 0){stop = 0;}
+                if (stop == 1 && old_idx != idx && idx == 0){ // continue to rotate by one step
+                    stop = 0;
                 }
                 else if (idx <= 9 && 0 <= idx && old_idx != idx){ // integer
                     temp_step = temp_step * 10 + idx;
@@ -185,6 +236,10 @@ static PT_THREAD (protothread_vga(struct pt *pt))
                     temp_step = 0;
                 }else if (idx == 11){ // go back to the manual page
                     page = "Manual Page";
+                    temp_step = 0;
+                    rotate_flag = 0;
+                    stop = 1;
+                    draw_UI();
                 }
                 break;
             case "Manual Lift Page":
@@ -198,6 +253,8 @@ static PT_THREAD (protothread_vga(struct pt *pt))
                     lift = "down_1cm";
                 }else if (idx == 11){ // go back to the manual page
                     page = "Manual Page";
+                    lift = "stop";
+                    draw_UI();
                 }
                 break;
             case "Auto Page":
@@ -208,7 +265,6 @@ static PT_THREAD (protothread_vga(struct pt *pt))
         
         printf("%d %d %f\n",page, temp_step, degree);
         old_idx = idx;
-        draw_UI();
 
         spare_time = FRAME_RATE - (time_us_32() - begin_time) ;
         // yield for necessary amount of time
