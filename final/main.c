@@ -203,42 +203,48 @@ static PT_THREAD (protothread_vga(struct pt *pt))
 
         switch(page){
             case 0: // at Main Page
-                if (idx == 1){
-                    page = 1; // go to the manual page
-                    draw_UI();
-                }else if (idx == 2){
-                    page = 2; // go to the auto page
-                    draw_UI();
+                if (old_idx != idx){
+                    if (idx == 1){
+                        page = 1; // go to the manual page
+                        draw_UI();
+                    }else if (idx == 2){
+                        page = 2; // go to the auto page
+                        draw_UI();
+                    }
                 }
                 break;
             case 1: // at Manual Page
-                if (idx == 1){
-                    page = 11; // go to the rotation page
-                    draw_UI();
-                }else if (idx == 2){
-                    page = 12; // go to the lift page
-                    draw_UI();
-                }else if (idx == 11){
-                    page = 0; // go back to the main page
-                    draw_UI();
+                if (old_idx != idx){
+                    if (idx == 1){
+                        page = 11; // go to the rotation page
+                        draw_UI();
+                    }else if (idx == 2){
+                        page = 12; // go to the lift page
+                        draw_UI();
+                    }else if (idx == 11){
+                        page = 0; // go back to the main page
+                        draw_UI();
+                    }
                 }
                 break;
             case 11: // at Manual Rotation Page
-                if (stop == 1 && old_idx != idx && idx == 0){ // continue to rotate by one step
-                    stop = 0;
-                }
-                else if (idx <= 9 && 0 <= idx && old_idx != idx){ // integer
-                    temp_step = temp_step * 10 + idx;
-                }else if (idx == 10 && old_idx != idx){ // confirm
-                    stepsPerRevolution = temp_step;
-                    rotate_flag = 1;
-                    temp_step = 0;
-                }else if (idx == 11){ // go back to the manual page
-                    page = 1; // go to manual page
-                    temp_step = 0;
-                    rotate_flag = 0;
-                    stop = 1;
-                    draw_UI();
+                if (old_idx != idx){
+                    if (stop == 1 && idx == 0){ // continue to rotate by one step
+                        stop = 0;
+                    }
+                    else if (idx <= 9 && 0 <= idx){ // integer
+                        temp_step = temp_step * 10 + idx;
+                    }else if (idx == 10){ // confirm
+                        stepsPerRevolution = temp_step;
+                        rotate_flag = 1;
+                        temp_step = 0;
+                    }else if (idx == 11){ // go back to the manual page
+                        page = 1; // go to manual page
+                        temp_step = 0;
+                        rotate_flag = 0;
+                        stop = 1;
+                        draw_UI();
+                    }
                 }
                 break;
             case 12:
@@ -246,18 +252,18 @@ static PT_THREAD (protothread_vga(struct pt *pt))
                     lift = 1; // up manual
                 }else if (idx == 5){ // go down manually
                     lift = 2; // down manual
-                }else if (idx == 3){ // go up by 1cm
+                }else if (idx == 3 && old_idx != idx){ // go up by 1cm
                     lift = 3; // up by 1cm
-                }else if (idx == 6){ // go down by 1cm
+                }else if (idx == 6 && old_idx != idx){ // go down by 1cm
                     lift = 4; // down by 1cm
-                }else if (idx == 11){ // go back to the manual page
+                }else if (idx == 11 && old_idx != idx){ // go back to the manual page
                     page = 1; // go to the manual page
                     lift = 0; // stop the lift
                     draw_UI();
                 }
                 break;
             case 2:
-                if (idx == 11){ // go back to the Main Page
+                if (idx == 11 && old_idx != idx){ // go back to the Main Page
                     page = 0; // go to the main page
                 }
                 break;
