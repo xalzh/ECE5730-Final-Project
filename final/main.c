@@ -237,7 +237,7 @@ static PT_THREAD (protothread_vga(struct pt *pt))
                     }
                     else if (idx <= 9 && 0 <= idx){ // integer
                         temp_step = temp_step * 10 + idx;
-                        sprintf(temp, "%s%.2f", "Current Degree is ", temp_step);
+                        sprintf(temp, "%s%.2f", "Current Degree is ", temp_step*1.8);
                         draw_UI();
                     }else if (idx == 10){ // confirm
                         stepsPerRevolution = temp_step;
