@@ -49,12 +49,11 @@ typedef signed int fix15 ;
 
 // semaphore
 static struct pt_sem vga_semaphore; // VGA drawing semaphore
-const int dirPin = 15; // direction pin
-const int stepPin = 14; // step pin
+const int dirPin_rotation = 15; // rotation direction pin
+const int stepPin_rotation = 14; // rotation step pin
+const int dirPin_lift = 3; // lift direction pin
+const int stepPin_lift = 2; // lift step pin
 int stepsPerRevolution; // Steps per revolution
-const int stepPads[4] = {2,3,4,5}; // step pads
-const int sequence[4] = {3,6,12,9}; // sequence for the lift
-const int reverse_sequence[4] = {9, 12, 6, 3}; // reverse sequence for the lift
 float degree = 0.0; // degree of the rotation
 int redius = 100; // redius of the circle
 int rotate_flag = 0; // flag to rotate the plate
@@ -71,6 +70,8 @@ unsigned int button = 0x70 ;
 int lift = 0; // stop the lift
 int page = 0; // Main Page
 int stop = 0; // stop flag for the rotation
+int manual_auto = 0; // Initial Stop Flag
+int auto_index = 0; // indicator of the auto initial configuration step
 int temp_step = 0;
 static int new_x ; // new end x pos of the pointer on the circle
 static int new_y ;  // new end y pos of the pointer on the circle
@@ -133,6 +134,18 @@ void draw_UI(){
             break;
         case 2: // at Auro Page
             writeString("Auto Page");
+            if (auto_index==0){
+                setCursor(450, 230);
+                writeString("First please enter the rotation degree:");
+                setCursor(450, 250);
+                writeString("0-9. Input");
+                setCursor(450, 270);
+                writeString("*. Confirm");
+                setCursor(450, 290);
+                writeString("#. Back");
+                setCursor(450, 310);
+                writeString(temp);
+            }
             break;
     }
 }
@@ -218,6 +231,7 @@ static PT_THREAD (protothread_vga(struct pt *pt))
                 }
                 break;
             case 1: // at Manual Page
+                manual_auto = 1; // at Manual Mode
                 if (old_idx != idx){
                     if (idx == 1){
                         page = 11; // go to the rotation page
@@ -228,6 +242,7 @@ static PT_THREAD (protothread_vga(struct pt *pt))
                     }else if (idx == 11){
                         page = 0; // go back to the main page
                         draw_UI();
+                        manual_auto = 0; // change to stop
                     }
                 }
                 break;
@@ -274,8 +289,13 @@ static PT_THREAD (protothread_vga(struct pt *pt))
                 }
                 break;
             case 2:
+                manual_auto = 2; // at auto mode
+                if (auto_index==0){ // at degree selection step
+
+                }
                 if (idx == 11 && old_idx != idx){ // go back to the Main Page
                     page = 0; // go to the main page
+                    manual_auto = 0; // change to stop
                 }
                 break;
             default:
@@ -302,107 +322,98 @@ static PT_THREAD (protothread_serial(struct pt *pt))
     int s; // step
 
     // Motor Rotation auto solution
-    // if (rotate_flag == 1){
-    //     int step = 200 / stepsPerRevolution;
-    //     for(int i = 0; i < step; i++){
-    //         // Set motor direction clockwise
-    //         gpio_put(dirPin, 1);
-    //         // Spin motor
-    //         printf("%f",degree);
-    //         degree += stepsPerRevolution * 1.8;
-    //         for(int x = 0; x < stepsPerRevolution; x++){
-    //             gpio_put(stepPin, 1);
-    //             sleep_us(2000);
-    //             gpio_put(stepPin, 0);
-    //             sleep_us(2000);
-    //         }
-    //         sleep_ms(500);
+    // int step = 200 / stepsPerRevolution;
+    // for(int i = 0; i < step; i++){
+    //     // Set motor direction clockwise
+    //     gpio_put(dirPin, 1);
+    //     // Spin motor
+    //     printf("%f",degree);
+    //     degree += stepsPerRevolution * 1.8;
+    //     for(int x = 0; x < stepsPerRevolution; x++){
+    //         gpio_put(stepPin, 1);
+    //         sleep_ms(5);
+    //         gpio_put(stepPin, 0);
+    //         sleep_ms(5);
     //     }
-    //     rotate_flag = 0;
-    //     degree = 0.0;
+    //     sleep_ms(1000);
     // }
+    // rotate_flag = 0;
+    // degree = 0.0;
+    
 
-    if (rotate_flag == 1 && stop == 0){
-        //Set motor direction clockwise
-        gpio_put(dirPin, 1);
-        // Spin motor
-        degree += stepsPerRevolution * 1.8;
-        draw_rotation_platform();
-        draw_rotation_text();
-        for(int x = 0; x < stepsPerRevolution; x++){
-            gpio_put(stepPin, 1);
-            sleep_us(2000);
-            gpio_put(stepPin, 0);
-            sleep_us(2000);
-        }
-        if (degree >= 360.0){
-            rotate_flag = 0;
-            degree = 0.0;
-            sprintf(temp, "%s%.2f", "Current Degree is ", temp_step*1.8);
-            draw_UI();
+    if (manual_auto==1){ // at manual mode
+        // motor rotation
+        if (rotate_flag == 1 && stop == 0){
+            //Set motor direction clockwise
+            gpio_put(dirPin_rotation, 0);
+            // Spin motor
+            degree += stepsPerRevolution * 1.8;
             draw_rotation_platform();
             draw_rotation_text();
+            for(int x = 0; x < stepsPerRevolution; x++){
+                gpio_put(stepPin_rotation, 1);
+                sleep_ms(6);
+                gpio_put(stepPin_rotation, 0);
+                sleep_ms(6);
+            }
+            if (degree >= 360.0){
+                rotate_flag = 0;
+                degree = 0.0;
+                sprintf(temp, "%s%.2f", "Current Degree is ", temp_step*1.8);
+                draw_UI();
+                draw_rotation_platform();
+                draw_rotation_text();
+            }
+            stop = 1;
         }
-        stop = 1;
-    }
+        // Motor Lift
+        switch (lift){
+            case 1: // if up manual
+                gpio_put(dirPin_lift, 0);
+                sleep_ms(2);
+                gpio_put(stepPin_lift, 1);
+                sleep_ms(2);
+                gpio_put(stepPin_lift, 0);
+                sleep_ms(2);
+                lift = 0; // stop the lift
+                break;
+            case 2: // if down manual
+                printf("???");
+                gpio_put(dirPin_lift, 1);
+                sleep_ms(2);
+                gpio_put(stepPin_lift, 1);
+                sleep_ms(2);
+                gpio_put(stepPin_lift, 0);
+                sleep_ms(2);
+                lift = 0; // stop the lift
+                break;
+            case 3: // if up by 1cm
+                gpio_put(dirPin_lift, 1);
+                for(int x = 0; x < 10; x++){
+                    gpio_put(stepPin_lift, 1);
+                    sleep_ms(6);
+                    gpio_put(stepPin_lift, 0);
+                    sleep_ms(6);
+                }
+                lift = 0; // stop the lift
+                break;
+            case 4: // if down by 1cm
+                gpio_put(dirPin_lift, 0);
+                for(int x = 0; x < 10; x++){
+                    gpio_put(stepPin_lift, 1);
+                    sleep_ms(6);
+                    gpio_put(stepPin_lift, 0);
+                    sleep_ms(6);
+                }
+                lift = 0; // stop the lift
+                break;
+            default:
+                break;
+        }
+    }else if (manual_auto == 2){ // at auto mode
 
-    // Motor Lift
-    switch (lift){
-        case 1: // if up manual
-            for(int i = 0; i < 4; i ++){
-            s = reverse_sequence[i];
-            for (int j = 0; j < 4; j++){
-                int m = 1 << j;
-                if ((m & s) > 0){gpio_put(stepPads[j],1);}
-                else{gpio_put(stepPads[j],0);}
-            }
-            sleep_ms(2);
-            }
-            lift = 0; // stop the lift
-            break;
-        case 2: // if down manual
-            for(int i = 0; i < 4; i ++){
-            s = sequence[i];
-            for (int j = 0; j < 4; j++){
-                int m = 1 << j;
-                if ((m & s) > 0){gpio_put(stepPads[j],1);}
-                else{gpio_put(stepPads[j],0);}
-            }
-            sleep_ms(2);
-            }
-            lift = 0; // stop the lift
-            break;
-        case 3: // if up by 1cm
-            for (int k = 0; k < 650; k++){
-                for(int i = 0; i < 4; i ++){
-                s = reverse_sequence[i];
-                for (int j = 0; j < 4; j++){
-                    int m = 1 << j;
-                    if ((m & s) > 0){gpio_put(stepPads[j],1);}
-                    else{gpio_put(stepPads[j],0);}
-                }
-                sleep_ms(2);
-                }
-            }
-            lift = 0; // stop the lift
-            break;
-        case 4: // if down by 1cm
-            for (int k = 0; k < 650; k++){
-                for(int i = 0; i < 4; i ++){
-                s = sequence[i];
-                for (int j = 0; j < 4; j++){
-                    int m = 1 << j;
-                    if ((m & s) > 0){gpio_put(stepPads[j],1);}
-                    else{gpio_put(stepPads[j],0);}
-                }
-                sleep_ms(2);
-                }
-            }
-            lift = 0; // stop the lift
-            break;
-        default:
-            break;
     }
+    
 
     // Indicate end of thread
     PT_END(pt);
@@ -419,16 +430,15 @@ int main() {
     // Initialize stdio
     stdio_init_all();
 
-    gpio_init(stepPin);
-    gpio_init(dirPin);
-    gpio_set_dir(stepPin, GPIO_OUT);
-    gpio_set_dir(dirPin, GPIO_OUT);
+    gpio_init(stepPin_rotation);
+    gpio_init(dirPin_rotation);
+    gpio_init(stepPin_lift);
+    gpio_init(dirPin_lift);
+    gpio_set_dir(stepPin_lift, GPIO_OUT);
+    gpio_set_dir(dirPin_lift, GPIO_OUT);
+    gpio_set_dir(stepPin_rotation, GPIO_OUT);
+    gpio_set_dir(dirPin_rotation, GPIO_OUT);
     
-    for(int i = 0; i < 4; i ++){
-        gpio_init(stepPads[i]);
-        gpio_set_dir(stepPads[i], GPIO_OUT);
-        gpio_put(stepPads[i], 0);
-    }
 
     // Initialize the keypad GPIO's
     gpio_init_mask((0x7F << BASE_KEYPAD_PIN)) ;

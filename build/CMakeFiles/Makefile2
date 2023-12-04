@@ -1694,10 +1694,10 @@ final\CMakeFiles\final_hsync_pio_h.dir\clean:
 
 # All Build rule for target.
 final\CMakeFiles\final.dir\all: pico-sdk\src\rp2_common\boot_stage2\CMakeFiles\bs2_default_padded_checksummed_asm.dir\all
-final\CMakeFiles\final.dir\all: final\CMakeFiles\final_vsync_pio_h.dir\all
+final\CMakeFiles\final.dir\all: final\CMakeFiles\ELF2UF2Build.dir\all
 final\CMakeFiles\final.dir\all: final\CMakeFiles\final_hsync_pio_h.dir\all
 final\CMakeFiles\final.dir\all: final\CMakeFiles\final_rgb_pio_h.dir\all
-final\CMakeFiles\final.dir\all: final\CMakeFiles\ELF2UF2Build.dir\all
+final\CMakeFiles\final.dir\all: final\CMakeFiles\final_vsync_pio_h.dir\all
 	$(MAKE) $(MAKESILENT) -f final\CMakeFiles\final.dir\build.make /nologo -$(MAKEFLAGS) final\CMakeFiles\final.dir\depend
 	$(MAKE) $(MAKESILENT) -f final\CMakeFiles\final.dir\build.make /nologo -$(MAKEFLAGS) final\CMakeFiles\final.dir\build
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Users\zl823\Desktop\github\ECE5730-Final-Project\build\CMakeFiles --progress-num=23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76 "Built target final"
