@@ -49,10 +49,10 @@ typedef signed int fix15 ;
 
 // semaphore
 static struct pt_sem vga_semaphore; // VGA drawing semaphore
-const int dirPin_rotation = 15; // rotation direction pin
-const int stepPin_rotation = 14; // rotation step pin
-const int dirPin_lift = 3; // lift direction pin
-const int stepPin_lift = 2; // lift step pin
+const int dirPin_rotation = 3; // rotation direction pin
+const int stepPin_rotation = 2; // rotation step pin
+const int dirPin_lift = 15; // lift direction pin
+const int stepPin_lift = 14; // lift step pin
 int stepsPerRevolution; // Steps per revolution
 float degree = 0.0; // degree of the rotation
 int redius = 100; // redius of the circle
@@ -62,6 +62,7 @@ int rotate_flag = 0; // flag to rotate the plate
 #define KEYROWS         4
 #define NUMKEYS         12
 static int idx;
+static int old_idx;
 unsigned int keycodes[12] = {   0x28, 0x11, 0x21, 0x41, 0x12,
                                 0x22, 0x42, 0x14, 0x24, 0x44,
                                 0x18, 0x48} ;
@@ -72,11 +73,17 @@ int page = 0; // Main Page
 int stop = 0; // stop flag for the rotation
 int manual_auto = 0; // Initial Stop Flag
 int auto_index = 0; // indicator of the auto initial configuration step
-int temp_step = 0;
+int temp_step = 0; //temp hold for rotation degree
+int temp_step2 = 0; // temp hold for rotation interval
+int temp_step3 = 0; // temp hold for lift interval
+int interval = 0; // set auto rotation interval
+int interval2 = 0; // set auto lift interval
 static int new_x ; // new end x pos of the pointer on the circle
 static int new_y ;  // new end y pos of the pointer on the circle
 char deg[50]; // degree in string
 char temp[50]; // temp string for rotation degree
+char temp1[50]; // temp string for auto rotation interval
+char temp2[50]; // temp string for auto lift interval
 
 // Interrupt service routine
 void on_pwm_wrap() {
@@ -134,17 +141,65 @@ void draw_UI(){
             break;
         case 2: // at Auro Page
             writeString("Auto Page");
-            if (auto_index==0){
-                setCursor(450, 230);
-                writeString("First please enter the rotation degree:");
-                setCursor(450, 250);
-                writeString("0-9. Input");
-                setCursor(450, 270);
-                writeString("*. Confirm");
-                setCursor(450, 290);
-                writeString("#. Back");
-                setCursor(450, 310);
-                writeString(temp);
+            switch (auto_index){
+                case 0:
+                    setCursor(450, 230);
+                    writeString("Rotation degree:");
+                    setCursor(450, 250);
+                    writeString("0-9. Input");
+                    setCursor(450, 270);
+                    writeString("*. Confirm");
+                    setCursor(450, 290);
+                    writeString("#. Back to main");
+                    setCursor(450, 310);
+                    writeString(temp);
+                    break;
+                case 1:
+                    setCursor(450, 230);
+                    writeString("Rotation interval in seconds:");
+                    setCursor(450, 250);
+                    writeString("0-9. Input");
+                    setCursor(450, 270);
+                    writeString("*. Confirm");
+                    setCursor(450, 290);
+                    writeString("#. Back to main");
+                    setCursor(450, 310);
+                    writeString(temp);
+                    setCursor(450, 330);
+                    writeString(temp1);
+                    break;
+                case 2:
+                    setCursor(450, 230);
+                    writeString("Manual Lift Control");
+                    setCursor(450, 250);
+                    writeString("2. Up");
+                    setCursor(450, 270);
+                    writeString("5. Down");
+                    setCursor(450, 290);
+                    writeString("*. Confirm");
+                    setCursor(450, 310);
+                    writeString("#. Back to main");
+                    setCursor(450, 330);
+                    writeString(temp);
+                    setCursor(450, 350);
+                    writeString(temp1);
+                    break;
+                case 3:
+                    setCursor(450, 230);
+                    writeString("Lift interval in cm:");
+                    setCursor(450, 250);
+                    writeString("0-9. Input");
+                    setCursor(450, 270);
+                    writeString("*. Confirm");
+                    setCursor(450, 290);
+                    writeString("#. Back to main");
+                    setCursor(450, 310);
+                    writeString(temp);
+                    setCursor(450, 330);
+                    writeString(temp1);
+                    setCursor(450, 350);
+                    writeString(temp2);
+                    break;
             }
             break;
     }
@@ -181,8 +236,8 @@ void draw_rotation_platform(){
     // draw circle
     drawCircle(320, 240, redius, WHITE);
     drawLine(320, 240, new_x, new_y, BLACK);
-    new_x = 320 + redius * sin(degree*PI/180);
-    new_y = 240 + redius * cos(degree*PI/180);
+    new_x = 320 + redius * sin(-degree*PI/180);
+    new_y = 240 + redius * cos(-degree*PI/180);
     drawLine(320, 240, new_x, new_y, WHITE);
 }
 
@@ -206,7 +261,6 @@ static PT_THREAD (protothread_vga(struct pt *pt))
     static int spare_time ;
     setTextSize(1);
     
-    int old_idx;
     sprintf(temp, "%s%.2f", "Current Degree is ", temp_step*1.8);
     draw_rotation_platform();
     draw_rotation_text();
@@ -273,7 +327,7 @@ static PT_THREAD (protothread_vga(struct pt *pt))
                     }
                 }
                 break;
-            case 12:
+            case 12: // at Manual Lift Page
                 if (idx == 2){ // go up manually
                     lift = 1; // up manual
                 }else if (idx == 5){ // go down manually
@@ -288,11 +342,108 @@ static PT_THREAD (protothread_vga(struct pt *pt))
                     draw_UI();
                 }
                 break;
-            case 2:
-                manual_auto = 2; // at auto mode
-                if (auto_index==0){ // at degree selection step
-
+            case 2: // at Auto Page
+                switch (auto_index){
+                    case 0: // at auto rotation degree selection page
+                        if (old_idx != idx){
+                            if (idx <= 9 && 0 <= idx){ // integer
+                                temp_step = temp_step * 10 + idx;
+                                if (temp_step > 200){
+                                    temp_step = 200;
+                                }
+                                sprintf(temp, "%s%.2f", "Degree Selection:  ", temp_step*1.8);
+                                draw_UI();
+                            }else if (idx == 10){ // confirm
+                                stepsPerRevolution = temp_step;
+                                temp_step = 0;
+                                temp_step2 = 0;
+                                temp_step3 = 0;
+                                auto_index = 1; // go to the lift page
+                                draw_UI();
+                            }else if (idx == 11){ // go back to the manual page
+                                page = 0; // go to main page
+                                temp_step = 0;
+                                temp_step2 = 0;
+                                temp_step3 = 0;
+                                draw_UI();
+                            }
+                        }
+                        break;
+                    case 1: // at auto interval time selection page
+                        if (old_idx != idx){
+                            if (idx <= 9 && 0 <= idx){ // integer
+                                temp_step2 = temp_step2 * 10 + idx;
+                                sprintf(temp1, "%s%d%s", "Degree Interval:  ", temp_step2, "(s)");
+                                draw_UI();
+                            }else if (idx == 10){ // confirm
+                                interval = temp_step2;
+                                auto_index = 2; // go to height adjust page 
+                                temp_step = 0;
+                                temp_step2 = 0;
+                                temp_step3 = 0;
+                                draw_UI();
+                            }else if (idx == 11){ // go back to the rotation degree selection page
+                                page = 0; // go to main page
+                                temp_step = 0;
+                                temp_step2 = 0;
+                                temp_step3 = 0;
+                                draw_UI();
+                            }
+                        }
+                        break;
+                    case 2: // at auto lift page
+                        if (idx == 2){ // go up
+                            gpio_put(dirPin_lift, 0);
+                            sleep_ms(2);
+                            gpio_put(stepPin_lift, 1);
+                            sleep_ms(2);
+                            gpio_put(stepPin_lift, 0);
+                            sleep_ms(2);
+                        }else if (idx == 5){ // go down
+                            gpio_put(dirPin_lift, 1);
+                            sleep_ms(2);
+                            gpio_put(stepPin_lift, 1);
+                            sleep_ms(2);
+                            gpio_put(stepPin_lift, 0);
+                            sleep_ms(2);
+                        }else if (idx == 10 && old_idx != idx){ // confirm
+                            auto_index = 3; // go to lift selection page
+                            temp_step = 0;
+                            temp_step2 = 0;
+                            temp_step3 = 0;
+                            draw_UI();
+                        }else if (idx == 11 && old_idx != idx){ // go back to the interval time selection page
+                            page = 0; // go to main page
+                            temp_step = 0;
+                            temp_step2 = 0;
+                            temp_step3 = 0;
+                            draw_UI();
+                        }
+                        break;
+                    case 3: // at auto lift selection page
+                        if (old_idx != idx){
+                            if (idx <= 9 && 0 <= idx){ // integer
+                                temp_step3 = temp_step3 * 10 + idx;
+                                sprintf(temp2, "%s%d%s", "Lift Interval:  ", temp_step3, "(cm)");
+                                draw_UI();
+                            }else if (idx == 10){ // confirm
+                                interval2 = temp_step3;
+                                temp_step = 0;
+                                temp_step2 = 0;
+                                temp_step3 = 0;
+                                manual_auto = 2;
+                                draw_UI();
+                            }else if (idx == 11){ // go back to the rotation degree selection page
+                                page = 0; // go to main page
+                                temp_step = 0;
+                                temp_step2 = 0;
+                                temp_step3 = 0;
+                                draw_UI();
+                            }
+                        }
+                        break;
                 }
+
                 if (idx == 11 && old_idx != idx){ // go back to the Main Page
                     page = 0; // go to the main page
                     manual_auto = 0; // change to stop
@@ -302,7 +453,8 @@ static PT_THREAD (protothread_vga(struct pt *pt))
                 break;
         }
         
-        printf("%d %d %f\n",page, temp_step, degree);
+        //printf("%d %d %f\n",page, temp_step, degree);
+        //printf("idx: %d\n",idx);
         old_idx = idx;
 
         spare_time = FRAME_RATE - (time_us_32() - begin_time) ;
@@ -315,46 +467,27 @@ static PT_THREAD (protothread_vga(struct pt *pt))
     PT_END(pt);
 }
 
+int count = 0;;
 static PT_THREAD (protothread_serial(struct pt *pt))
 {
     // Indicate start of thread
     PT_BEGIN(pt) ;
     int s; // step
 
-    // Motor Rotation auto solution
-    // int step = 200 / stepsPerRevolution;
-    // for(int i = 0; i < step; i++){
-    //     // Set motor direction clockwise
-    //     gpio_put(dirPin, 1);
-    //     // Spin motor
-    //     printf("%f",degree);
-    //     degree += stepsPerRevolution * 1.8;
-    //     for(int x = 0; x < stepsPerRevolution; x++){
-    //         gpio_put(stepPin, 1);
-    //         sleep_ms(5);
-    //         gpio_put(stepPin, 0);
-    //         sleep_ms(5);
-    //     }
-    //     sleep_ms(1000);
-    // }
-    // rotate_flag = 0;
-    // degree = 0.0;
-    
-
     if (manual_auto==1){ // at manual mode
         // motor rotation
         if (rotate_flag == 1 && stop == 0){
             //Set motor direction clockwise
-            gpio_put(dirPin_rotation, 0);
+            gpio_put(dirPin_rotation, 1);
             // Spin motor
             degree += stepsPerRevolution * 1.8;
             draw_rotation_platform();
             draw_rotation_text();
             for(int x = 0; x < stepsPerRevolution; x++){
                 gpio_put(stepPin_rotation, 1);
-                sleep_ms(6);
+                sleep_ms(10);
                 gpio_put(stepPin_rotation, 0);
-                sleep_ms(6);
+                sleep_ms(10);
             }
             if (degree >= 360.0){
                 rotate_flag = 0;
@@ -378,7 +511,6 @@ static PT_THREAD (protothread_serial(struct pt *pt))
                 lift = 0; // stop the lift
                 break;
             case 2: // if down manual
-                printf("???");
                 gpio_put(dirPin_lift, 1);
                 sleep_ms(2);
                 gpio_put(stepPin_lift, 1);
@@ -388,8 +520,8 @@ static PT_THREAD (protothread_serial(struct pt *pt))
                 lift = 0; // stop the lift
                 break;
             case 3: // if up by 1cm
-                gpio_put(dirPin_lift, 1);
-                for(int x = 0; x < 10; x++){
+                gpio_put(dirPin_lift, 0);
+                for(int x = 0; x < 545; x++){
                     gpio_put(stepPin_lift, 1);
                     sleep_ms(6);
                     gpio_put(stepPin_lift, 0);
@@ -398,8 +530,8 @@ static PT_THREAD (protothread_serial(struct pt *pt))
                 lift = 0; // stop the lift
                 break;
             case 4: // if down by 1cm
-                gpio_put(dirPin_lift, 0);
-                for(int x = 0; x < 10; x++){
+                gpio_put(dirPin_lift, 1);
+                for(int x = 0; x < 545; x++){
                     gpio_put(stepPin_lift, 1);
                     sleep_ms(6);
                     gpio_put(stepPin_lift, 0);
@@ -411,10 +543,55 @@ static PT_THREAD (protothread_serial(struct pt *pt))
                 break;
         }
     }else if (manual_auto == 2){ // at auto mode
-
+        //Motor Rotation auto run
+        int step = 200 / stepsPerRevolution;
+        for(int i = 0; i < step; i++){
+            // Set motor direction clockwise
+            gpio_put(dirPin_rotation, 1);
+            // Spin motor
+            printf("%f",degree);
+            degree += stepsPerRevolution * 1.8;
+            draw_rotation_platform();
+            draw_rotation_text();
+            for(int x = 0; x < stepsPerRevolution; x++){
+                gpio_put(stepPin_rotation, 1);
+                sleep_ms(10);
+                gpio_put(stepPin_rotation, 0);
+                sleep_ms(10);
+            }
+            sleep_ms(interval*1000);
+        }
+        degree = 0.0;
+        for (int i=0; i<interval2;i++){
+            gpio_put(dirPin_lift, 0);
+            for(int x = 0; x < 545; x++){
+                gpio_put(stepPin_lift, 1);
+                sleep_ms(6);
+                gpio_put(stepPin_lift, 0);
+                sleep_ms(6);
+            }
+            sleep_ms(interval*1000);
+            //Motor Rotation auto run
+            int step = 200 / stepsPerRevolution;
+            for(int i = 0; i < step; i++){
+                // Set motor direction clockwise
+                gpio_put(dirPin_rotation, 1);
+                // Spin motor
+                degree += stepsPerRevolution * 1.8;
+                draw_rotation_platform();
+                draw_rotation_text();
+                for(int x = 0; x < stepsPerRevolution; x++){
+                    gpio_put(stepPin_rotation, 1);
+                    sleep_ms(10);
+                    gpio_put(stepPin_rotation, 0);
+                    sleep_ms(10);
+                }
+                sleep_ms(interval*1000);
+            }
+            degree = 0.0;
+        }
     }
     
-
     // Indicate end of thread
     PT_END(pt);
 }
