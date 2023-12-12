@@ -1,19 +1,36 @@
 /**
+ * This is the code for the final project of ECE 5730
+ * Project Name: Microwave Imaging System
+ * Author: Zehao Li(zl823) and Kapil Gangwar(kg434)
+ * Date: 12/11/2023 
+ * Description: This project is to build the Microwave Imaging System with two Vivaldi antennas 
+   aims to achieve good-resolution 2D imaging through circular motion and 3D image reconstruction 
+   by vertical movement of the subject using scattering parameter messurements.
 
  * HARDWARE CONNECTIONS
-   - GPIO 2  ---> IN2 on the ULN2003 Driver Board
-   - GPIO 3  ---> IN3 on the ULN2003 Driver Board
-   - GPIO 4  ---> IN4 on the ULN2003 Driver Board
+    - GPIO 2  ---> STEP on the A4988 Stepper Motor Driver 1
+    - GPIO 3  ---> DIR on the A4988 Stepper Motor Driver 1
+    - GPIO 7  ---> Pin1 on the Keyboard
+    - GPIO 8  ---> Pin2 on the Keyboard
+    - GPIO 9  ---> Pin3 on the Keyboard
+    - GPIO 10 ---> Pin4 on the Keyboard
+    - GPIO 11 ---> Pin5 on the Keyboard
+    - GPIO 12 ---> Pin6 on the Keyboard
+    - GPIO 13 ---> Pin7 on the Keyboard
+    - GPIO 14 ---> STEP on the A4988 Stepper Motor Driver 2
+    - GPIO 15 ---> DIR on the A4988 Stepper Motor Driver 2
+    - GPIO 16 ---> VGA Hsync
+    - GPIO 17 ---> VGA Vsync
+    - GPIO 18 ---> 330 ohm resistor ---> VGA Red
+    - GPIO 19 ---> 330 ohm resistor ---> VGA Green
+    - GPIO 20 ---> 330 ohm resistor ---> VGA Blue
+    - RP2040 GND ---> VGA GND
+    - RP2040 GND ---> Switch ---> RP2040 RUN
+    - RP2040 GND ---> GND on the A4988 Stepper Motor Driver 1 and 2
+    - RP2040 3V3 ---> VDD on the A4988 Stepper Motor Driver 1 and 2
 
-   - GPIO 2  ---> IN2 on the ULN2003 Driver Board
-
-   - GPIO 16 ---> VGA Hsync
-   - GPIO 17 ---> VGA Vsync
-   - GPIO 18 ---> 330 ohm resistor ---> VGA Red
-   - GPIO 19 ---> 330 ohm resistor ---> VGA Green
-   - GPIO 20 ---> 330 ohm resistor ---> VGA Blue
-   - RP2040 GND ---> VGA GND
-
+    - External 12V power supply ---> VMOT on the A4988 Stepper Motor Driver 1 and 2
+    - External 12V ground ---> GND on the A4988 Stepper Motor Driver 1 and 2
  */
 
 
@@ -93,7 +110,7 @@ void on_pwm_wrap() {
     PT_SEM_SIGNAL(pt, &vga_semaphore);
 }
 
-void draw_UI(){
+void draw_UI(){ // Only call Draw UI when the page is changed
     fillRect(440, 200, 200, 280, BLACK);
     drawRect(440, 200, 200, 280, WHITE);
     setCursor(450, 210);
@@ -139,7 +156,7 @@ void draw_UI(){
             setCursor(450, 310);
             writeString("#. Back");
             break;
-        case 2: // at Auro Page
+        case 2: // at Auto Page
             writeString("Auto Page");
             switch (auto_index){
                 case 0:
